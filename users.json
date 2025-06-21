@@ -1,0 +1,22 @@
+[
+  {
+    "id": "c278345a-d891-4273-a6de-419a903d4980",
+    "username": "testuser",
+    "email": "test@gmail.com",
+    "password": "$2b$12$GSQ5a/umTkLPOwslrJsJKOhpDsvOuUMUswE.PHC283gmbswh/IdCa",
+    "createdAt": "2025-06-21T13:22:32.699Z",
+    "isActive": true,
+    "resetToken": "97f40ebb29d08cbbfca0e408227db5e1be5f1f233529b76192bc675f4f497988",
+    "resetTokenExpires": 1750513269645
+  },
+  {
+    "id": "17b1a34c-d614-4d55-aac6-3393000d8b61",
+    "username": "testuser1",
+    "email": "altburg13@gmail.com",
+    "password": "$2b$12$JAL1n04JCXh1LJ4QoJ63cuRn25lhXRFXh8IhIwC8AjnzZ1uyZVc0W",
+    "createdAt": "2025-06-21T13:27:43.798Z",
+    "isActive": true,
+    "resetToken": "a5ec22a085690fa9d19aaa69bc104f20cc1572c58258d3018bd07cd09d3659d5",
+    "resetTokenExpires": 1750513486365
+  }
+]
