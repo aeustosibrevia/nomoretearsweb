@@ -1,5 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import '../styles/forgotStyle.css';
+import logo from '../assets/logo.png';
 
 const ForgotPasswordPage = () => {
     const navigate = useNavigate()
@@ -12,7 +13,7 @@ const ForgotPasswordPage = () => {
     return (
         <div className="forgot-container">
             <div className="forgot-box">
-                <img src="/logo.png" alt="Logo" className="logo"/>
+                <img src={logo} alt="Logo" className="logo"/>
                 <h2>Забули пароль?</h2>
                 <form className="forgot-form" onSubmit={handleSubmit}>
                     <input type="email" placeholder="Email" required/>
