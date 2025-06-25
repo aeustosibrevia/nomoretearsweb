@@ -8,7 +8,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "dotenv": "^16.5.0",
@@ -20,5 +19,14 @@
     "path-to-regexp": "^8.2.0",
     "validator": "^13.15.15",
     "winston": "^3.17.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aeustosibrevia/nomoretearsweb.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aeustosibrevia/nomoretearsweb/issues"
+  },
+  "homepage": "https://github.com/aeustosibrevia/nomoretearsweb#readme",
+  "description": ""
 }
