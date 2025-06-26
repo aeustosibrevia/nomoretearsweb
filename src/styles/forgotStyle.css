@@ -33,6 +33,7 @@ body {
     margin: 10px 0;
     border: 1px solid #ccc;
     border-radius: 8px;
+    box-sizing: border-box;
 }
 
 .forgot-btn {

@@ -5,7 +5,7 @@ import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 const AppRouter = () => {
     return (
         <Routes>
-            <Route path="/" element={<LoginPage/>}/>
+            <Route path="/login" element={<LoginPage/>}/>
             <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
             <Route path="/success" element={<div>Ми надіслали листа</div>}/>
         </Routes>

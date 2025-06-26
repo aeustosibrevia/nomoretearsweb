@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/forgotStyle.css';
 import logo from '../assets/logo.png';
 
+
 const ForgotPasswordPage = () => {
     const navigate = useNavigate()
 

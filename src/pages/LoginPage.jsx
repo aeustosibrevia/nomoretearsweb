@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import '../styles/loginStyle.css';
 import logo from '../assets/logo.png';
 
+
 const LoginPage = () => {
   return (
     <div className="login-container">
