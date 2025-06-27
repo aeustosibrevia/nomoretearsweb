@@ -1,0 +1,44 @@
+.Header {
+    background-color: #ADE8F4;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+
+.left-block {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+.logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    display: block;
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    gap: 15px;
+}
+
+nav a {
+    text-decoration: none;
+    font-weight: bold;
+    color: #001f5c;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.myAccount {
+    font-weight: bold;
+    color: #001f5c;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
