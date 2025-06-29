@@ -4,6 +4,7 @@ import logo from '../assets/logo.png'
 
 const RegistrationPage = () => {
     return (
+        <div className="registration-page">
         <div className="registration-container">
             <div className="registration-content">
                 <img src={logo} alt="Logo" className="logo" />
@@ -20,6 +21,7 @@ const RegistrationPage = () => {
                     </form>
                 </div>
             </div>
+        </div>
         </div>
     );
 }

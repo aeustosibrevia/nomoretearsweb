@@ -12,6 +12,7 @@ const ForgotPasswordPage = () => {
     };
 
     return (
+        <div className="forgot-page">
         <div className="forgot-container">
             <div className="forgot-content">
                 <img src={logo} alt="Logo" className="logo" />
@@ -36,6 +37,7 @@ const ForgotPasswordPage = () => {
                     )}
                 </div>
             </div>
+        </div>
         </div>
     );
 };

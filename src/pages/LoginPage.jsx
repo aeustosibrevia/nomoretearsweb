@@ -5,6 +5,7 @@ import logo from '../assets/logo.png';
 
 const LoginPage = () => {
     return (
+        <div className="login-page">
         <div className="login-container">
             <div className="login-content">
                 <img src={logo} alt="Logo" className="logo" />
@@ -23,6 +24,7 @@ const LoginPage = () => {
                         </div>
                     </form>
                 </div>
+            </div>
             </div>
         </div>
     );

@@ -13,7 +13,7 @@ const Header = () => {
             </nav>
             </div>
             <div className='myAccount'>
-                Мій аккаунт <span role="img" aria-label="user">👤</span>
+                <Link to='/account'> Мій аккаунт <span role="img" aria-label="user">👤</span></Link>
             </div>
         </header>
     )
