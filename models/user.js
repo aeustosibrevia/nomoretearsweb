@@ -1,0 +1,22 @@
+const { DataTypes } = require('sequelize');
+const sequelize = require('./index');
+
+const User = sequelize.define('user', {
+    id: {
+        type: DataTypes.UUID,
+        primaryKey: true
+    },
+    username: DataTypes.STRING,
+    email: DataTypes.STRING,
+    password: DataTypes.TEXT,
+    role: DataTypes.ENUM('student', 'admin'),
+    created_at: DataTypes.DATE,
+    is_active: DataTypes.BOOLEAN,
+    reset_token: DataTypes.TEXT,
+    reset_token_expires: DataTypes.BIGINT
+}, {
+    tableName: 'user',
+    timestamps: false
+});
+
+module.exports = User;
