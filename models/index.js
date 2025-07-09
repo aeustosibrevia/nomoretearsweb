@@ -7,4 +7,9 @@ const sequelize = new Sequelize(process.env.DB_NAME || "postgres", process.env.D
     port: process.env.DB_PORT || 3000
 });
 
+sequelize.authenticate()
+  .then(() => console.log('✅ Підключення до PostgreSQL встановлено'))
+  .catch(err => console.error('❌ Не вдалося підключитись:', err));
+
+
 module.exports = sequelize;

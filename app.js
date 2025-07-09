@@ -5,6 +5,12 @@ const rateLimit = require('express-rate-limit');
 const errorHandler = require('./middlewares/errorHandler');
 const authRoutes = require('./routes/authRoutes');
 const cors = require('cors');
+const session = require('express-session');
+const passport = require('passport');
+require('./utils/passport');
+
+
+
 
 const app = express();
 dotenv.config();
@@ -14,6 +20,15 @@ app.use(cors({
     credentials: true
 }));
 
+
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'secret_key',
+    resave: false,
+    saveUninitialized: false
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(helmet());
 app.use(express.json({limit: '10mb'}));
