@@ -3,7 +3,7 @@ import LoginPage from '../pages/LoginPage';
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import RegistrationPage from "../pages/RegistrationPage";
 import AccountPage from "../pages/AccountPage";
-
+import MainPage from "../pages/MainPage";
 
 const AppRouter = () => {
     return (
@@ -12,7 +12,7 @@ const AppRouter = () => {
             <Route path="/registration" element={<RegistrationPage/>}/>
             <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
             <Route path="/account" element={<AccountPage/>}/>
-
+            <Route path="/" element={<MainPage/>}/>
         </Routes>
     );
 };

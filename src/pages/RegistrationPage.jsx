@@ -48,7 +48,6 @@ const RegistrationPage = () => {
                             <input name="password" type="password" placeholder="Пароль" value={formData.password}
                                    onChange={handleChange} required/>
                             <button type="submit" className="registration-btn">Зареєструватись</button>
-                            <button type="button" className="google-btn">Зареєструватись через Google</button>
                             <div className="log-link">
                                 <Link to="/login">Вже є аккаунт? Вхід</Link>
                             </div>

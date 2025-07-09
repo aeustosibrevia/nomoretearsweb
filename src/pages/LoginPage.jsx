@@ -18,7 +18,16 @@ const LoginPage = () => {
                             <Link to="/forgot-password">Забули пароль?</Link>
                         </div>
                         <button type="submit" className="login-btn">Увійти</button>
-                        <button type="button" className="google-btn">Увійти через Google</button>
+                        <button
+                            type="button"
+                            className="google-btn"
+                            onClick={() => {
+                                window.location.href = 'http://localhost:3000/auth/google';
+                            }}
+                        >
+                            Увійти через Google
+                        </button>
+
                         <div className="reg-link">
                             <Link to="/registration">Немає аккаунту? Зареєструватись</Link>
                         </div>
