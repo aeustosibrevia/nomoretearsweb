@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const  User  = require('../models/user');
 const { Op } = require('sequelize');
 const { sendResetEmail } = require('../utils/email');
+const  createError  = require('http-errors');
 
 const SALT_ROUNDS = 12;
 
@@ -12,14 +13,14 @@ exports.register = async ({ username, password, email }) => {
         where: { username: username.trim().toLowerCase() }
     });
     if (existingUserByUsername) {
-        throw new Error('Користувач із таким ім’ям уже існує');
+        throw createError(409, 'Користувач із таким ім’ям уже існує');
     }
 
     const existingUserByEmail = await User.findOne({
         where: { email: email.trim().toLowerCase() }
     });
     if (existingUserByEmail) {
-        throw new Error('Користувач з такою електронною адресою вже існує');
+        throw createError(409, 'Користувач з такою електронною адресою вже існує');
     }
 
     const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
@@ -49,12 +50,12 @@ exports.login = async ({ username, password }) => {
     });
 
     if (!user) {
-        throw new Error('Неправильні облікові дані');
+        throw createError(401, 'Неправильні облікові дані');
     }
 
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-        throw new Error('Неправильні облікові дані');
+        throw createError(401, 'Неправильні облікові дані');
     }
 
     const token = jwt.sign(
@@ -86,7 +87,7 @@ exports.logout = async (user) => {
 exports.getProfile = async (authUser) => {
     const user = await User.findByPk(authUser.userId);
     if (!user || !user.is_active) {
-        throw new Error('Користувача не знайдено');
+        throw createError(404, 'Користувача не знайдено');
     }
 
     return {
@@ -101,7 +102,7 @@ exports.updateProfile = async (authUser, body) => {
     const { email } = body;
     const user = await User.findByPk(authUser.userId);
     if (!user || !user.is_active) {
-        throw new Error('Користувача не знайдено');
+        throw createError(404, 'Користувача не знайдено');
     }
 
     if (email && email.trim().toLowerCase() !== user.email) {
@@ -109,7 +110,7 @@ exports.updateProfile = async (authUser, body) => {
             where: { email: email.trim().toLowerCase() }
         });
         if (emailExists) {
-            throw new Error('Цей email уже використовується');
+            throw createError(409, 'Цей email уже використовується');
         }
         user.email = email.trim().toLowerCase();
     }
@@ -130,12 +131,12 @@ exports.changePassword = async (authUser, body) => {
     const { currentPassword, newPassword } = body;
     const user = await User.findByPk(authUser.userId);
     if (!user || !user.is_active) {
-        throw new Error('Користувача не знайдено');
+        throw createError(404, 'Користувача не знайдено');
     }
 
     const isCurrentPasswordValid = await bcrypt.compare(currentPassword, user.password);
     if (!isCurrentPasswordValid) {
-        throw new Error('Неправильний поточний пароль');
+        throw createError(400, 'Неправильний поточний пароль');
     }
 
     user.password= await bcrypt.hash(newPassword, SALT_ROUNDS);
@@ -179,7 +180,7 @@ exports.resetPassword = async ({ token, newPassword }) => {
     });
 
     if (!user) {
-        throw new Error('Недійсний або протермінований токен');
+        throw createError(400, 'Недійсний або протермінований токен');
     }
 
     user.password = await bcrypt.hash(newPassword, SALT_ROUNDS);
