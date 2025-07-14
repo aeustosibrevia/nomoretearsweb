@@ -4,6 +4,8 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const errorHandler = require('./middlewares/errorHandler');
 const authRoutes = require('./routes/authRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
+const courseRoutes = require('./routes/courseRoutes');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
@@ -43,6 +45,8 @@ const generalLimiter = rateLimit({
 });
 app.use(generalLimiter);
 app.use('/', authRoutes);
+app.use('/categories', categoryRoutes);
+app.use('/courses', courseRoutes);
 
 
 app.get('/health', (req, res) => {

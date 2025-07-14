@@ -17,7 +17,7 @@ const User = sequelize.define('user', {
         type: DataTypes.TEXT,
         allowNull: true
     },
-    role: DataTypes.ENUM('student', 'admin'),
+    role: DataTypes.ENUM('student', 'admin', 'instructor'),
     created_at: DataTypes.DATE,
     is_active: DataTypes.BOOLEAN,
     reset_token: DataTypes.TEXT,

@@ -1,0 +1,6 @@
+CREATE TABLE category
+(
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(255),
+    slug VARCHAR(255) UNIQUE NOT NULL
+);
