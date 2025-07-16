@@ -32,10 +32,10 @@ exports.validateRegistration = (req, res, next) => {
 };
 
 exports.validateLogin = (req, res, next) => {
-    const { username, password } = req.body;
+    const { email, password } = req.body;
     const errors = [];
 
-    if (!username || !password) {
+    if (!email || !password) {
         errors.push('Ім’я користувача та пароль обов’язкові');
     }
 

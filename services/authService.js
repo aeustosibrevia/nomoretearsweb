@@ -1,23 +1,23 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const crypto = require('crypto');
-const  User  = require('../models/user');
-const { Op } = require('sequelize');
-const { sendResetEmail } = require('../utils/email');
-const  createError  = require('http-errors');
+const User = require('../models/user');
+const {Op} = require('sequelize');
+const {sendResetEmail} = require('../utils/email');
+const createError = require('http-errors');
 
 const SALT_ROUNDS = 12;
 
-exports.register = async ({ username, password, email }) => {
+exports.register = async ({username, password, email}) => {
     const existingUserByUsername = await User.findOne({
-        where: { username: username.trim().toLowerCase() }
+        where: {username: username.trim().toLowerCase()}
     });
     if (existingUserByUsername) {
         throw createError(409, 'Користувач із таким ім’ям уже існує');
     }
 
     const existingUserByEmail = await User.findOne({
-        where: { email: email.trim().toLowerCase() }
+        where: {email: email.trim().toLowerCase()}
     });
     if (existingUserByEmail) {
         throw createError(409, 'Користувач з такою електронною адресою вже існує');
@@ -41,10 +41,10 @@ exports.register = async ({ username, password, email }) => {
     };
 };
 
-exports.login = async ({ username, password }) => {
+exports.login = async ({email, password}) => {
     const user = await User.findOne({
         where: {
-            username: username.trim().toLowerCase(),
+            email: email.trim().toLowerCase(),
             is_active: true
         }
     });
@@ -99,7 +99,7 @@ exports.getProfile = async (authUser) => {
 };
 
 exports.updateProfile = async (authUser, body) => {
-    const { email } = body;
+    const {email} = body;
     const user = await User.findByPk(authUser.userId);
     if (!user || !user.is_active) {
         throw createError(404, 'Користувача не знайдено');
@@ -107,7 +107,7 @@ exports.updateProfile = async (authUser, body) => {
 
     if (email && email.trim().toLowerCase() !== user.email) {
         const emailExists = await User.findOne({
-            where: { email: email.trim().toLowerCase() }
+            where: {email: email.trim().toLowerCase()}
         });
         if (emailExists) {
             throw createError(409, 'Цей email уже використовується');
@@ -128,7 +128,7 @@ exports.updateProfile = async (authUser, body) => {
 };
 
 exports.changePassword = async (authUser, body) => {
-    const { currentPassword, newPassword } = body;
+    const {currentPassword, newPassword} = body;
     const user = await User.findByPk(authUser.userId);
     if (!user || !user.is_active) {
         throw createError(404, 'Користувача не знайдено');
@@ -139,10 +139,10 @@ exports.changePassword = async (authUser, body) => {
         throw createError(400, 'Неправильний поточний пароль');
     }
 
-    user.password= await bcrypt.hash(newPassword, SALT_ROUNDS);
+    user.password = await bcrypt.hash(newPassword, SALT_ROUNDS);
     await user.save();
 
-    return { message: 'Пароль успішно змінено' };
+    return {message: 'Пароль успішно змінено'};
 };
 
 exports.requestPasswordReset = async (email) => {
@@ -154,7 +154,7 @@ exports.requestPasswordReset = async (email) => {
     });
 
     if (!user) {
-        return { message: 'Якщо такий email існує, лист з інструкцією буде надіслано' };
+        return {message: 'Якщо такий email існує, лист з інструкцією буде надіслано'};
     }
 
     const resetToken = crypto.randomBytes(32).toString('hex');
@@ -167,14 +167,14 @@ exports.requestPasswordReset = async (email) => {
     const resetUrl = `${process.env.FRONTEND_URL || 'http://localhost:3000'}/reset-password?token=${resetToken}`;
     await sendResetEmail(email, resetUrl);
 
-    return { message: 'Якщо такий email існує, лист з інструкцією буде надіслано' };
+    return {message: 'Якщо такий email існує, лист з інструкцією буде надіслано'};
 };
 
-exports.resetPassword = async ({ token, newPassword }) => {
+exports.resetPassword = async ({token, newPassword}) => {
     const user = await User.findOne({
         where: {
             reset_token: token,
-            reset_token_expires: { [Op.gt]: new Date() },
+            reset_token_expires: {[Op.gt]: new Date()},
             is_active: true
         }
     });
@@ -188,5 +188,5 @@ exports.resetPassword = async ({ token, newPassword }) => {
     user.reset_token_expires = null;
     await user.save();
 
-    return { message: 'Пароль успішно оновлено' };
+    return {message: 'Пароль успішно оновлено'};
 };
