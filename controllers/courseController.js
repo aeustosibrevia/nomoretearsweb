@@ -1,4 +1,19 @@
 const courseService = require("../services/courseService");
+const createError = require("http-errors");
+const Course = require("../models/course");
+
+exports.loadCourse = async (req, res, next) => {
+    try {
+        const course = await Course.findByPk(req.params.id);
+        if (!course) {
+            return next(createError(404, "Курс не знайдено."));
+        }
+        req.course = course;
+        next();
+    } catch (err) {
+        next(err);
+    }
+};
 
 exports.createCourse = async (req, res, next) => {
     try{

@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { validateCourse } = require('../middlewares/validators');
+const { validateCourse } = require('../middlewares/courseValidator');
 const authMiddleware = require('../middlewares/authMiddleware');
 const courseController = require("../controllers/courseController");
 
 router.post('/', authMiddleware, validateCourse, courseController.createCourse);
-router.put('/:id', authMiddleware, validateCourse, courseController.updateCourse);
+router.put('/:id', authMiddleware, courseController.loadCourse, validateCourse, courseController.updateCourse);
 router.delete('/:id', authMiddleware, courseController.deleteCourse);
 router.get('/', courseController.getAllCourses);
 router.get('/:id', courseController.getCourseById);
