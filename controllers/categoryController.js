@@ -17,7 +17,6 @@ exports.loadCategory = async (req, res, next) => {
 
 exports.createCategory = async (req, res, next) => {
     try{
-        console.log('BODY:', req.body); // <-- Обязательно
         const result = await categoryService.createCategory(req.body, req.user);
         res.status(201).json(result);
     }

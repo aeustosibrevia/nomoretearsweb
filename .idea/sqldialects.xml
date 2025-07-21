@@ -5,6 +5,9 @@
     <file url="file://$PROJECT_DIR$/migrations/004_category.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/migrations/005_course.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/migrations/006.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/migrations/007.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/migrations/008.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/migrations/009.sql" dialect="PostgreSQL" />
     <file url="PROJECT" dialect="PostgreSQL" />
   </component>
 </project>

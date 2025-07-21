@@ -6,6 +6,8 @@ const errorHandler = require('./middlewares/errorHandler');
 const authRoutes = require('./routes/authRoutes');
 const categoryRoutes = require('./routes/categoryRoutes');
 const courseRoutes = require('./routes/courseRoutes');
+const lessonRoutes = require('./routes/lessonRoutes');
+const enrollmentRoutes = require('./routes/enrollmentRoutes');
 const cors = require('cors');
 const session = require('express-session');
 const passport = require('passport');
@@ -47,6 +49,8 @@ app.use(generalLimiter);
 app.use('/', authRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/courses', courseRoutes);
+app.use('/lessons', lessonRoutes);
+app.use('/enrollments', enrollmentRoutes);
 
 
 app.get('/health', (req, res) => {
