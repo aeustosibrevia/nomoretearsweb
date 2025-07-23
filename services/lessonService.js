@@ -4,6 +4,7 @@ const Course = require('../models/course');
 const LessonProgress = require('../models/lessonProgress');
 const enrollmentService = require('./enrollmentService');
 const Enrollment = require('../models/enrollment');
+const generateSlug = require('../utils/slug');
 
 
 exports.createLesson = async (data, user) => {
@@ -22,6 +23,7 @@ exports.createLesson = async (data, user) => {
     const newLesson = await Lesson.create({
         course_id: data.course_id,
         title: data.title,
+        slug: generateSlug(data.title),
         video_data: data.video_data,
         content: data.content
     });
@@ -50,7 +52,11 @@ exports.updateLesson = async (id, data, user) => {
         throw createError(403, "У вас немає прав для редагування цього уроку.");
     }
 
-    lesson.title = data.title ?? lesson.title;
+    if (data.title) {
+        lesson.title = data.title;
+        lesson.slug = generateSlug(data.title);
+    }
+
     lesson.video_data = data.video_data ?? lesson.video_data;
     lesson.content = data.content ?? lesson.content;
     lesson.course_id = data.course_id ?? lesson.course_id;
@@ -87,40 +93,6 @@ exports.deleteLesson = async (id, user) => {
         message: "Урок успішно видалено.",
         lessonId: lesson.id
     };
-};
-
-exports.getLessonById = async (id, user) => {
-    const lesson = await Lesson.findByPk(id);
-    if (!lesson) {
-        throw createError(404, "Урок не знайдено.");
-    }
-
-    const course = await Course.findByPk(lesson.course_id);
-    if (!course || (!course.is_published && user.role !== 'admin' && user.userId !== course.instructor_id)) {
-        throw createError(403, "У вас немає доступу до цього уроку.");
-    }
-
-    return lesson;
-};
-
-exports.getLessonsByCourse = async (courseId, user) => {
-    const course = await Course.findByPk(courseId);
-    if (!course) {
-        throw createError(404, "Курс не знайдено.");
-    }
-
-    const isAdmin = user?.role === 'admin';
-    const isOwnerInstructor = user?.role === 'instructor' && user.userId === course.instructor_id;
-    const isPublic = course.is_published;
-
-    if (!isPublic && !isAdmin && !isOwnerInstructor) {
-        throw createError(403, "У вас немає доступу до цього курсу.");
-    }
-
-    return await Lesson.findAll({
-        where: { course_id: courseId },
-        order: [['id', 'ASC']]
-    });
 };
 
 exports.markLessonAsFinished = async (userId, lessonId) => {
@@ -194,4 +166,50 @@ exports.unmarkLessonAsFinished = async (userId, lessonId) => {
         lessonId: lessonId
     };
 };
+
+exports.getBySlugs = async (categorySlug, courseSlug, lessonSlug, user) => {
+    const lesson = await Lesson.findOne({
+        where: { slug: lessonSlug },
+        include: [{
+            model: Course,
+            as: 'course',
+            where: { slug: courseSlug },
+            include: [{
+                association: 'category',
+                where: { slug: categorySlug }
+            }]
+        }]
+    });
+
+    if (!lesson) throw createError(404, "Урок не знайдено");
+
+    const course = lesson.course;
+
+    const isAdminOrOwner = user?.role === 'admin' || user?.userId === course.instructor_id;
+    if (!course.is_published && !isAdminOrOwner) {
+        throw createError(403, "Курс ще не опубліковано");
+    }
+
+    let isEnrolled = false;
+    let enrollment = null;
+
+    if (user?.userId) {
+        enrollment = await Enrollment.findOne({
+            where: {
+                user_id: user.userId,
+                course_id: course.id
+            }
+        });
+        isEnrolled = !!enrollment;
+    }
+
+    if (!isEnrolled && !isAdminOrOwner) {
+        throw createError(403, "Ви не маєте доступу до цього уроку");
+    }
+
+    return lesson;
+};
+
+
+
 

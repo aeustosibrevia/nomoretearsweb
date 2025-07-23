@@ -9,8 +9,6 @@ router.put('/:id', authMiddleware, courseController.loadCourse, validateCourse, 
 router.delete('/:id', authMiddleware, courseController.deleteCourse);
 router.get('/', courseController.getAllCourses);
 router.get('/:id', courseController.getCourseById);
-router.get('/category/:categoryId', courseController.getCoursesByCategory);
-router.get('/instructor/:instructorId', courseController.getCoursesByInstructor);
 router.put('/:id/publish', authMiddleware, courseController.publishCourse);
 router.put('/:id/unpublish', authMiddleware, courseController.unpublishCourse);
 

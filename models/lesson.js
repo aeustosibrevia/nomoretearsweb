@@ -27,13 +27,18 @@ const Lesson = sequelize.define('lesson', {
     created_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW
+    },
+    slug: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false
     }
 }, {
     tableName: 'lesson',
     timestamps: false
 });
 
-Lesson.belongsTo(Course, { foreignKey: 'course_id' });
-Course.hasMany(Lesson, { foreignKey: 'course_id' });
+Lesson.belongsTo(Course, { foreignKey: 'course_id', as: 'course' });
+Course.hasMany(Lesson, { foreignKey: 'course_id', as: 'lessons' });
 
 module.exports = Lesson;

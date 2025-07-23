@@ -51,10 +51,10 @@ const Course = sequelize.define('course', {
     timestamps: false
 });
 
-Course.belongsTo(Category, { foreignKey: 'category_id' });
-Category.hasMany(Course, { foreignKey: 'category_id' });
+Course.belongsTo(Category, { foreignKey: 'category_id', as: 'category' });
+Category.hasMany(Course, { foreignKey: 'category_id', as: 'courses' });
 
-Course.belongsTo(User, { foreignKey: 'instructor_id' });
-User.hasMany(Course, { foreignKey: 'instructor_id' });
+Course.belongsTo(User, { foreignKey: 'instructor_id', as: 'instructor' });
+User.hasMany(Course, { foreignKey: 'instructor_id', as: 'instructedCourses' });
 
 module.exports = Course;

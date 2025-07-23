@@ -46,11 +46,15 @@ const generalLimiter = rateLimit({
     legacyHeaders: false,
 });
 app.use(generalLimiter);
-app.use('/', authRoutes);
-app.use('/categories', categoryRoutes);
-app.use('/courses', courseRoutes);
-app.use('/lessons', lessonRoutes);
-app.use('/enrollments', enrollmentRoutes);
+app.use('/', require('./routes/publicRoutes'));
+
+app.use('/api/auth', authRoutes);
+
+app.use('/api/categories', categoryRoutes);
+app.use('/api/courses', courseRoutes);
+app.use('/api/lessons', lessonRoutes);
+app.use('/api/enrollments', enrollmentRoutes);
+
 
 
 app.get('/health', (req, res) => {

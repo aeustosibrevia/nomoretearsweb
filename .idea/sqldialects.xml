@@ -8,6 +8,8 @@
     <file url="file://$PROJECT_DIR$/migrations/007.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/migrations/008.sql" dialect="PostgreSQL" />
     <file url="file://$PROJECT_DIR$/migrations/009.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/migrations/010.sql" dialect="PostgreSQL" />
+    <file url="file://$PROJECT_DIR$/migrations/lesson_slug.sql" dialect="PostgreSQL" />
     <file url="PROJECT" dialect="PostgreSQL" />
   </component>
 </project>
