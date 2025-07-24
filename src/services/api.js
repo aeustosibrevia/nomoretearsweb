@@ -1,7 +1,7 @@
 const API_BASE = 'http://localhost:3000';
 
 export async function register({ username, email, password}) {
-    const response = await fetch(`${API_BASE}/register`, {
+    const response = await fetch(`${API_BASE}/api/auth/register`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -19,7 +19,7 @@ export async function register({ username, email, password}) {
 }
 
 export async function login({ email, password}) {
-    const response = await fetch(`${API_BASE}/login`, {
+    const response = await fetch(`${API_BASE}/api/auth/login`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -34,4 +34,43 @@ export async function login({ email, password}) {
     }
 
     return data;
+}
+
+export async function createCategory(data) {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`${API_BASE}/api/categories/`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    });
+
+    const resData = await response.json();
+
+    if(!response.ok) {
+        throw new Error(resData.errors?.[0] || resData.error || 'Помилка створення категорії');
+    }
+
+    return resData;
+}
+
+export async function fetchCategories() {
+    const token = localStorage.getItem('token');
+
+    const response = await fetch(`${API_BASE}/api/categories/`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        throw new Error(data.error || 'Не вдалося отримати категорії');
+    }
+
+    return data.categories || data;
 }

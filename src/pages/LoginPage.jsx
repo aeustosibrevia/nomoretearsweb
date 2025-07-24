@@ -1,4 +1,4 @@
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import '../styles/loginStyle.css';
 import logo from '../assets/logo.png';
 import {useState} from 'react';
@@ -14,7 +14,6 @@ const LoginPage = () => {
 
     const [error, setError] = useState('')
     const [success, setSuccess] = useState('');
-    const navigate = useNavigate();
 
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value});
@@ -28,7 +27,10 @@ const LoginPage = () => {
         try {
             const result = await login(formData);
             setSuccess(result.message);
-            setTimeout(() => navigate('/'), 1500);
+            localStorage.setItem('user', JSON.stringify(result.user));
+            localStorage.setItem('token', result.token);
+
+            setTimeout(() => window.location.href = '/', 1500);
         } catch (err) {
             setError(err.message);
         }
