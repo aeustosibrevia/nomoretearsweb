@@ -15,3 +15,4 @@ router.get('/courses/:categorySlug/:courseSlug', courseController.getCourseBySlu
 router.get('/courses/:categorySlug/:courseSlug/:lessonSlug',authMiddleware, lessonController.getLessonBySlugs);
 
 module.exports = router;
+

@@ -1,0 +1,9 @@
+CREATE TABLE review(
+    id SERIAL PRIMARY KEY,
+    user_id UUID NOT NULL REFERENCES "user"(id),
+    course_id INTEGER NOT NULL REFERENCES course(id) ON DELETE CASCADE,
+    rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5) ,
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+);
