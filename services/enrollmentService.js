@@ -48,3 +48,11 @@ exports.updateProgress = async (userId, course_id) => {
         where: { user_id: userId, course_id: course_id },
     });
 };
+
+exports.isUserEnrolled = async (userId, courseId) => {
+    const enrollment = await Enrollment.findOne({
+        where: { user_id: userId, course_id: courseId }
+    });
+
+    return !!enrollment;
+};

@@ -55,6 +55,7 @@ app.use('/api/courses', courseRoutes);
 app.use('/api/lessons', lessonRoutes);
 app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/reviews', require('./routes/reviewRoutes'));
+app.use('/api/quizzes', require('./routes/quizRoutes'));
 
 
 
