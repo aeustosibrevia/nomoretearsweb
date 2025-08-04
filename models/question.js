@@ -28,4 +28,5 @@ const Question = sequelize.define('question', {
 Question.belongsTo(Quiz, { foreignKey: 'quiz_id', as: 'quiz' });
 Quiz.hasMany(Question, { foreignKey: 'quiz_id', as: 'questions' });
 
+
 module.exports = Question;

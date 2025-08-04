@@ -6,7 +6,7 @@ const questionController = require("../controllers/questionController");
 
 router.post('/', authMiddleware, validateQuestion, questionController.createQuestion);
 router.put('/:id', authMiddleware, questionController.loadQuestion, validateQuestion, questionController.updateQuestion);
-router.get('/:quiz_id', authMiddleware, questionController.getQuestionsByQuiz);
 router.delete('/:id', authMiddleware, questionController.deleteQuestion);
+router.get('/:id', authMiddleware,questionController.loadQuestion, questionController.getQuestion);
 
 module.exports = router;
