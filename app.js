@@ -57,7 +57,7 @@ app.use('/api/enrollments', enrollmentRoutes);
 app.use('/api/reviews', require('./routes/reviewRoutes'));
 app.use('/api/quizzes', require('./routes/quizRoutes'));
 app.use('/api/questions', require('./routes/questionRoutes'));
-
+app.use('/api/answers', require('./routes/answerRoutes'));
 
 
 app.get('/health', (req, res) => {
