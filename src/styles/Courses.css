@@ -1,0 +1,98 @@
+.list-page{
+    background:#5680E9;
+    min-height:100%;
+    min-width:100%;
+    padding: 18px clamp(12px, 4vw, 40px);
+    box-sizing:border-box;
+    color:#fff;
+}
+
+.tabs{
+    display:flex; gap:10px; flex-wrap:wrap;
+    margin-bottom: 14px;
+}
+.tab{
+    border:0; cursor:pointer;
+    padding:8px 14px; border-radius:18px;
+    font-weight:700; color:#fff;
+    transition: transform .15s, box-shadow .15s, opacity .15s;
+    box-shadow:0 6px 14px rgba(0,0,0,.18);
+    opacity:.9;
+}
+.tab:hover{ transform:translateY(-2px); opacity:1; }
+.tab.is-active{ box-shadow:0 10px 24px rgba(0,0,0,.25); }
+
+.tab--math{    background:#7D1913; }
+.tab--history{ background:#ECA04B; }
+.tab--ukr{     background:#5AB9EA; }
+
+.course-cards{ display:flex; flex-direction:column; gap:16px; }
+
+.course-card{
+    --card-bg: var(--theme-card, #b85a5a);
+    --card-bg-hover: var(--theme-card-hover, #8E1B12);
+
+    display:flex; gap:18px;
+    background: var(--card-bg);
+    border-radius:16px;
+    box-shadow:0 10px 26px rgba(0,0,0,.25);
+    padding:16px;
+    transition: background .15s, transform .15s, box-shadow .15s;
+}
+.course-card:hover{
+    background: var(--card-bg-hover);
+    transform: translateY(-2px);
+    box-shadow:0 16px 36px rgba(0,0,0,.3);
+}
+
+.course-card__media{
+    flex:0 0 180px; height:120px;
+    border-radius:12px;
+    background: rgba(255,255,255,.25);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+}
+.media-badge{
+    background:#fff; color:#111; font-weight:800;
+    padding:10px 12px; border-radius:14px;
+    text-align:center; line-height:1.2;
+}
+
+.course-card__body{ flex:1; display:flex; flex-direction:column; gap:8px; }
+.course-card__head{
+    display:flex; align-items:center; justify-content:space-between; gap:10px;
+}
+.course-card__title{
+    margin:0; font-weight:800; font-size:16px; line-height:1.2; color:#fff;
+}
+.course-card__more{
+    color:#fff; text-decoration:none; opacity:.85;
+}
+.course-card__more:hover{ opacity:1; text-decoration:underline; }
+.course-card__desc{
+    margin:0; color:#fff; opacity:.9;
+    max-width: 60ch; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.skeleton-pill{
+    width:240px; height:18px; border-radius:999px;
+    background: rgba(255,255,255,.55);
+}
+
+.theme-math{
+    --theme-card: #995E5B;
+    --theme-card-hover: #7D1913;
+}
+.theme-history{
+    --theme-card: #C9A680;
+    --theme-card-hover: #ECA04B;
+}
+.theme-ukr{
+    --theme-card: #6B94A9;
+    --theme-card-hover: #5AB9EA;
+}
+
+@media (max-width: 680px){
+    .course-card{ flex-direction:column; }
+    .course-card__media{ width:100%; height:140px; }
+    .course-card__desc{ white-space:normal; }
+}

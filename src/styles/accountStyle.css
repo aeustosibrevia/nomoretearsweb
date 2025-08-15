@@ -1,23 +1,23 @@
 
 .account-container {
     display: flex;
-    background-color: #CAF0F8;
+    background-color: #5680E9;
     width:  100%;
     min-height: 100%;
+
 
 }
 
 .sidebar {
     display: flex;
     width: 300px;
-    background-color: #ADE8F4;
+    background-color: #C1C8E4;
     padding: 20px;
     box-sizing: border-box;
     flex-direction: column;
     align-items: center;
-    border-right: 1px solid #03045E;
-    border-bottom: 1px solid #03045E;
-
+    border-radius: 60px;
+    max-height: 90%;
 }
 
 .sidebar-logo {
@@ -30,52 +30,218 @@
     flex-direction: column;
     width: 100%;
     gap: 15px;
+
 }
 
 .sidebar-nav button {
     position: relative;
     background: none;
     border: none;
-    font-weight: normal;
     color: #001f5c;
     text-align: left;
     padding: 10px 15px;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.2s ease;
+    font-weight: bold;
+
 }
 
 .sidebar-nav button:hover {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* 🔷 Активна кнопка */
 .sidebar-nav button.active {
+    color: white;
     font-weight: bold;
-    background-color: white;
-    outline: 2px solid #00B4D8;
-}
-
-
-.sidebar-nav button.active::before {
-    background-color: #0077B6;
+    background-color: #8860D0;
 }
 
 
 .account-content {
     flex-grow: 1;
-    padding: 30px;
     box-sizing: border-box;
 }
 
 .faq-list {
-    list-style: none;
-    padding: 0;
+    max-width: 600px;
+    padding-left: 2rem;
+
 }
 
-.faq-list li {
-    padding: 10px 0;
-    border-bottom: 1px solid #0077B6;
+.faq-item {
+    border-bottom: 1px solid #ccc;
+    padding: 1rem 0;
+}
+
+.faq-question {
+    background: none;
+    border: none;
+    width: 100%;
+    font-size: 1rem;
     font-weight: bold;
-    color: #001f5c;
+    color: #003366;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.faq-answer {
+    margin-top: 0.5rem;
+    color: #333;
+}
+
+.faq-toggle {
+    font-size: 1.5rem;
+}
+
+
+
+.info-form-container {
+    background: none;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 800px;
+}
+
+.info-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #072c6c;
+    margin-bottom: 20px;
+}
+
+.info-content {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.info-photo {
+    text-align: center;
+}
+
+.photo-placeholder {
+    background-color: #000;
+    color: #fff;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.change-photo {
+    background: none;
+    border: none;
+    color: #0073e6;
+    cursor: pointer;
+    text-decoration: underline;
+    font-size: 14px;
+}
+
+.info-fields {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+label {
+    display: block;
+    font-weight: bold;
+    font-size: 14px;
+    color: #072c6c;
+    position: relative;
+}
+
+input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 20px;
+    border: none;
+    background-color: #a2e3f2;
+    margin-top: 6px;
+    font-size: 16px;
+    outline: none;
+}
+
+.with-edit {
+    position: relative;
+}
+
+.edit-link {
+    position: absolute;
+    right: 15px;
+    top: -15px;
+    font-size: 12px;
+    color: #0073e6;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+
+.password-form-container {
+    background: none;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 800px;
+}
+
+.password-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #072c6c;
+    margin-bottom: 20px;
+}
+
+.password-content {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.password-fields {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.input-wrapper {
+    position: relative;
+    width: 400px;
+    margin-top: 6px;
+}
+
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 15px;
+    color: white;
+    font-weight: bold;
+
+}
+
+.contact-item div {
+    display: flex;
+    flex-direction: column;
+}
+
+.contact-item img {
+    width: 24px;
+    height: 24px;
+}
+
+.contact-block {
+    font-family: Arial, sans-serif;
+    color: #072c6c;
+    padding: 16px;
+    max-width: 300px;
 }

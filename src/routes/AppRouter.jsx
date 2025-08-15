@@ -3,9 +3,15 @@ import LoginPage from '../pages/LoginPage';
 import ForgotPasswordPage from "../pages/ForgotPasswordPage";
 import RegistrationPage from "../pages/RegistrationPage";
 import AccountPage from "../pages/AccountPage";
-import MainPage from "../pages/MainPage";
+import MainShopPage from "../pages/MainShopPage";
 import AdminPage from "../pages/AdminPage";
 import CreateCategoryPage from "../pages/CreateCategoryPage";
+import MathCoursesPage from "../pages/MathCoursesPage";
+import HistoryCoursesPage from "../pages/HistoryCoursesPage";
+import UkrainianCoursesPage from "../pages/UkrainianCoursesPage";
+import CourseDetailPage from "../pages/CourseDetailPage";
+import CoursesPage from "../pages/CoursesPage";
+
 
 const AppRouter = () => {
     return (
@@ -16,7 +22,17 @@ const AppRouter = () => {
             <Route path="/account" element={<AccountPage/>}/>
             <Route path="/admin/courses" element={<AdminPage/>}/>
             <Route path="/admin/create-category" element={<CreateCategoryPage/>}/>
-            <Route path="/" element={<MainPage/>}/>
+            <Route path="/shop" element={<MainShopPage/>}/>
+            <Route path="/" element={<MainShopPage/>}/>
+
+            <Route path="/MathCourses" element={<MathCoursesPage/>}/>
+            <Route path="/HistoryCourses" element={<HistoryCoursesPage/>}/>
+            <Route path="/UkrainianCourses" element={<UkrainianCoursesPage/>}/>
+
+            <Route path="/CourseDetailPage" element={<CourseDetailPage/>}/>
+                <Route path="/courses" element={<CoursesPage/>}/>
+
+
         </Routes>
     );
 };

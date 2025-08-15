@@ -1,10 +1,9 @@
 .Header {
-    background-color: #ADE8F4;
+    background-color: #5680E9;
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 10px 20px;
-    border-bottom: 1px solid #03045E;
 
 }
 
@@ -30,17 +29,44 @@ nav {
 nav a {
     text-decoration: none;
     font-weight: bold;
-    color: #001f5c;
+    color: white;
+    background-color: #8860D0;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: inline-block;
+    transition: transform 0.2s, box-shadow 0.2s;
 }
 
 nav a:hover {
-    text-decoration: underline;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    color: white;
+
 }
 
+
 .myAccount {
+    text-decoration: none;
     font-weight: bold;
-    color: #001f5c;
-    display: flex;
     align-items: center;
     gap: 5px;
+    color: white;
+    background-color: #8860D0;
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: inline-block;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.myAccount,
+.myAccount a {
+    color: white;
+}
+
+.myAccount a {
+    text-decoration: none;
+}
+
+.myAccount:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
 }

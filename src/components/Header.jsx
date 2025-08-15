@@ -29,7 +29,7 @@ const Header = () => {
                         </>
                     ) : (
                         <>
-                            <Link to="/">Мої курси</Link>
+                            <Link to="/courses">Мої курси</Link>
                             <Link to="/shop">Магазин</Link>
                         </>
                     )}
@@ -37,7 +37,7 @@ const Header = () => {
             </div>
             <div className='myAccount'>
                 <Link to='/account'>
-                    {user ? user.username : 'Мій аккаунт'} <span role="img">👤</span>
+                    {user ? user.username : 'Мій аккаунт'} <span role="img"></span>
                 </Link>
             </div>
         </header>
