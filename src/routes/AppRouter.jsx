@@ -11,7 +11,8 @@ import HistoryCoursesPage from "../pages/HistoryCoursesPage";
 import UkrainianCoursesPage from "../pages/UkrainianCoursesPage";
 import CourseDetailPage from "../pages/CourseDetailPage";
 import CoursesPage from "../pages/CoursesPage";
-
+import ModulePage from "../pages/ModulePage";
+import LessonPage from "../pages/LessonPage";
 
 const AppRouter = () => {
     return (
@@ -32,6 +33,8 @@ const AppRouter = () => {
             <Route path="/CourseDetailPage" element={<CourseDetailPage/>}/>
                 <Route path="/courses" element={<CoursesPage/>}/>
 
+            <Route path="/modules/:moduleId" element={<ModulePage />} />
+            <Route path="/modules/:moduleId/lessons/:lessonId" element={<LessonPage />} />
 
         </Routes>
     );

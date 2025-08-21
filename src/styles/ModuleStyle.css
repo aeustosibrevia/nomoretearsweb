@@ -1,0 +1,170 @@
+:root{
+    --bg: #5680E9;
+    --white: #fff;
+    --pill: #ffffff;
+    --pill-text: #111;
+    --aside-head: #B06EFC;
+    --accent: #8860D0;
+    --card: #5680E9;
+    --card-hover: #b06efc;
+}
+
+
+.module-layout{
+    min-height:100%;
+    min-width:100%;
+    background: var(--bg);
+    color:#fff;
+    display:grid;
+    grid-template-columns: 1fr 340px;
+    gap:24px;
+    padding: 20px clamp(12px, 4vw, 48px) 40px;
+    box-sizing:border-box;
+}
+
+.module-main{ display:flex; flex-direction:column; gap:18px; position:relative; }
+
+.back-link{
+    position:absolute; left:0; top:0;
+    color:#fff; text-decoration:none; opacity:.9;
+    font-size: 24px; line-height:1;
+    transform: translateY(-4px);
+}
+.back-link:hover{ opacity:1; }
+
+.video-box{
+    background:#fff;
+    border-radius:6px;
+    box-shadow: 0 12px 28px rgba(0,0,0,.25);
+    overflow:hidden;
+}
+.video{ width:100%; height:auto; display:block; aspect-ratio: 16/9; background:#000; }
+
+.pill-title{
+    display:inline-flex; align-items:center;
+    padding:10px 16px;
+    background: var(--pill);
+    color: var(--pill-text);
+    border-radius:999px;
+    font-weight:900;
+    font-size: clamp(16px, 2.4vw, 28px);
+    margin:0;
+    box-shadow: 0 8px 18px rgba(0,0,0,.25);
+}
+.lesson-desc{
+    margin:6px 0 0;
+    max-width: 70ch;
+    line-height:1.7;
+    text-align: left;
+}
+
+.module-aside{
+    display:flex; flex-direction:column; gap:12px;
+}
+
+.aside-head{
+    display:grid; grid-template-columns: 36px 1fr 36px; align-items:center;
+    gap:8px;
+}
+.aside-title{
+    margin:0; text-align:center; font-weight:900;
+    background: linear-gradient(90deg, #b06efc, #8860D0);
+    padding:10px 16px; border-radius:16px;
+}
+.arrow-btn{
+    height:36px; border:none; border-radius:999px; color:#fff; background:rgba(255,255,255,.18);
+    cursor:pointer; font-size:18px;
+}
+.arrow-btn:hover{ filter:brightness(1.1); }
+
+.lesson-list{
+    list-style:none; margin:0; padding:0;
+    background: rgba(0,0,0,.12);
+    overflow:hidden;
+}
+.lesson-item{
+    display:block; padding:12px 14px; text-decoration:none; color:#fff;
+    background: var(--card);
+    transition: background .15s, transform .15s, box-shadow .15s;
+}
+.lesson-item:hover{ background: var(--card-hover); }
+
+.lesson-item__title{
+    display:inline-block; font-weight:900;
+    background:#fff; color:#111; padding:4px 8px; border-radius:10px; margin-bottom:6px;
+}
+.lesson-item__desc{ display:block; opacity:.95; }
+.lesson-divider{ height:1px; background: black; }
+
+.aside-actions{ display:flex; flex-direction:column; gap:8px; margin-top:8px; }
+.mark-btn{
+    border:none; border-radius:16px; padding:10px 14px;
+    color:#fff; font-weight:800; cursor:pointer;
+    background: linear-gradient(90deg, #b06efc, #8860D0);
+}
+.link-btn{
+    border:none; background:transparent; color:#fff; opacity:.9; text-align:center; cursor:pointer; font-weight: bold;
+}
+.link-btn:hover{ opacity:1; text-decoration:underline; }
+
+.lesson-aside{
+    align-self:start;
+    display:flex; flex-direction:column; gap:14px;
+    padding-top: 6px;
+}
+.lesson-aside__title{
+    margin:0; font-weight:900; font-size: clamp(18px, 2vw, 24px);
+}
+.lesson-link{ color:#fff; text-decoration:none; opacity:.9; }
+.lesson-link:hover{ opacity:1; text-decoration:underline; }
+.underline{ height:2px; background:#111; opacity:.35; }
+
+
+
+
+.module-main{
+    max-width: 980px;
+}
+
+.video-box{
+    background:#fff;
+    border-radius:6px;
+    box-shadow: 0 12px 28px rgba(0,0,0,.25);
+    overflow:hidden;
+}
+
+.player-16x9{
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    max-height: 60vh;
+}
+
+.player-16x9 iframe{
+    position:absolute; inset:0;
+    width:100%; height:100%;
+    border:0;
+}
+
+.lesson-extra__link{
+    display:block;
+    padding: 10px 14px;
+    color:#fff;
+    text-decoration:none;
+    opacity:.95;
+    background: var(--card);
+
+}
+.lesson-extra__link:hover{
+    opacity:1;
+    text-decoration:underline;
+}
+
+@media (max-width: 980px){
+    .module-layout{ grid-template-columns: 1fr; }
+}
+
+@media (max-width: 980px){
+    .module-main{ max-width: 100%; }
+    .player-16x9{ max-height: 52vh; }
+}

@@ -4,7 +4,7 @@ import '../styles/Courses.css';
 
 const data = {
     math: [
-        { id: "m1", title: "Назва курсу ", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
+        { id: "math-mod-1", title: "Назва курсу ", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
         { id: "m2", title: "Назва курсу", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
     ],
     history: [
@@ -46,7 +46,7 @@ const CoursesPage = () => {
 
             <div className="course-cards">
                 {items.map((c) => (
-                    <Link key={c.id} to={`/courses/${c.id}`} className="course-card-link">
+                    <Link key={c.id} to={`/modules/${c.id}`} className="course-card-link">
                         <article className="course-card">
                             <div className="course-card__media" />
                             <div className="course-card__body">
