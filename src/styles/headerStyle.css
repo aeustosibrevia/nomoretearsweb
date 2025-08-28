@@ -29,6 +29,7 @@ nav {
 nav a {
     text-decoration: none;
     font-weight: bold;
+    font-family: 'Inter', sans-serif;
     color: white;
     background-color: #8860D0;
     padding: 8px 16px;
@@ -48,6 +49,8 @@ nav a:hover {
 .myAccount {
     text-decoration: none;
     font-weight: bold;
+    font-family: 'Inter', sans-serif;
+
     align-items: center;
     gap: 5px;
     color: white;

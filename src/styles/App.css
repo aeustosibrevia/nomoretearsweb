@@ -3,6 +3,7 @@ html, body {
     margin: 0;
     padding: 0;
     background: #5680E9;
+
 }
 
 .app-layout {
@@ -13,10 +14,13 @@ html, body {
 
 .Header {
     flex-shrink: 0;
+
 }
 
 .main-content {
     flex: 1;
     display: flex;
     min-height: 100%;
+    font-family: 'Inter', sans-serif;
+
 }
