@@ -1,0 +1,122 @@
+
+.users-page,
+.user-detail-page{
+    min-height:100%;
+    min-width:100%;
+    background: #5680E9;
+    padding: 16px;
+    box-sizing: border-box;
+}
+
+.users-title{
+    margin: 0 0 12px;
+    font-weight: 800;
+    color: #0b1a22;
+}
+
+.users-list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 10px;
+    max-width: 1000px;
+
+}
+
+.users-item{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #e7f3fa;
+    border: 1px solid rgba(0,0,0,.12);
+    border-radius: 12px;
+    padding: 8px 10px;
+    box-shadow: 0 6px 14px rgba(0,0,0,.08);
+}
+
+.users-item__link{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: #0b1a22;
+    flex: 1;
+}
+
+.users-item__avatar{
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: #e3edf4;
+    display: grid; place-items: center;
+    border: 1px solid rgba(0,0,0,.08);
+}
+.users-item__avatar img{ width:100%; height:100%; object-fit: cover; }
+.avatar-placeholder{
+    width: 70%; height: 70%; border-radius: 50%;
+    background: #c6d7e2;
+    display: block;
+}
+
+.users-item__name{ font-weight: 700; }
+.users-item__menu{
+    background: #e3edf4;
+    border: 1px solid rgba(0,0,0,.12);
+    border-radius: 10px;
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+.user-detail-page{
+    display: grid;
+    grid-template-columns: 240px 1fr;
+    gap: 20px;
+}
+
+.user-detail__left{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+.detail-avatar{
+    width: 140px; height: 140px;
+    border-radius: 50%;
+    background: #e3edf4;
+    border: 1px solid rgba(0,0,0,.12);
+    overflow: hidden;
+    display: grid; place-items: center;
+    box-shadow: 0 8px 18px rgba(0,0,0,.12);
+}
+.detail-avatar img{ width:100%; height:100%; object-fit: cover; }
+.avatar-silhouette{
+    width: 60%; height: 60%;
+    background: radial-gradient(circle at 50% 40%, #b7c8d4 45%, #a3b5c2 46% 60%, transparent 61%),
+    radial-gradient(circle at 50% 85%, #a3b5c2 35%, transparent 36%);
+    border-radius: 50%;
+    display: block;
+}
+.detail-name{ font-weight: 800; }
+
+.user-detail__right{
+    display: grid;
+    align-content: start;
+    gap: 10px;
+    max-width: 1000px;
+
+}
+.pill-box{
+    background: #e7f3fa;
+    border: 1px solid rgba(0,0,0,.12);
+    border-radius: 16px;
+    padding: 10px 14px;
+    box-shadow: 0 8px 18px rgba(0,0,0,.12);
+    color: #0b1a22;
+    font-weight: 600;
+}
+
+@media (max-width: 860px){
+    .user-detail-page{ grid-template-columns: 1fr; }
+    .user-detail__left{ align-items: flex-start; }
+}

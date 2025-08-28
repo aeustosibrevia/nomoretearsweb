@@ -1,4 +1,4 @@
-import {useNavigate} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import {useEffect, useState} from 'react';
 import {fetchCategories} from "../services/api";
 import '../styles/AdminPageStyles.css';
@@ -8,6 +8,20 @@ const AdminPage = () => {
     const [categories, setCategories] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const data = {
+        math: [
+            { id: "math-mod-1", title: "Назва курсу ", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
+            { id: "m2", title: "Назва курсу", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
+        ],
+        history: [
+            { id: "h1", title: "Назва курсу", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
+            { id: "h2", title: "Назва курсу", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
+        ],
+        ukr: [
+            { id: "u1", title: "Назва курсу", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
+            { id: "u2", title: "Назва курсу", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
+        ],
+    };
 
     useEffect(() => {
         const loadCategories = async () => {
@@ -23,32 +37,54 @@ const AdminPage = () => {
 
         loadCategories();
     }, []);
+    const [tab, setTab] = useState("math");
+    const items = data[tab];
 
     return (
-        <div>
-            <button
-                onClick={() => navigate('/admin/create-category')}
-                aria-label="Додати категорію"
-                title="Додати категорію"
-                className="add-category-button"
-            >
-                +
-            </button>
+        <div className={`list-page theme-${tab}`}>
+            <div className="tabs-row">
+                <div className="tabs">
+                    <button
+                        className={`tab tab--math ${tab === "math" ? "is-active" : ""}`}
+                        onClick={() => setTab("math")}
+                    >
+                        Математика
+                    </button>
+                    <button
+                        className={`tab tab--history ${tab === "history" ? "is-active" : ""}`}
+                        onClick={() => setTab("history")}
+                    >
+                        Історія
+                    </button>
+                    <button
+                        className={`tab tab--ukr ${tab === "ukr" ? "is-active" : ""}`}
+                        onClick={() => setTab("ukr")}
+                    >
+                        Українська мова
+                    </button>
+                </div>
 
-            <h2>Категорії:</h2>
-            {loading ? (
-                <p>Завантаження...</p>
-            ) : error ? (
-                <p style={{color: 'red'}}>{error}</p>
-            ) : (
-                <ul>
-                    {categories.map(category => (
-                        <li key={category.id}>
-                            {category.name}
-                        </li>
-                    ))}
-                </ul>
-            )}
+                <button className="add-btn" onClick={() => navigate("/admin/add-course")}>+</button>
+            </div>
+
+            <div className="course-cards">
+                {items.map((c) => (
+                    <Link key={c.id} to={`/admin/modules/${c.id}`} className="course-card-link">
+                        <article className="course-card">
+                            <div className="course-card__media" />
+                            <div className="course-card__body">
+                                <div className="course-card__head">
+                                    <h3 className="course-card__title">{c.title}</h3>
+                                    <span className="course-card__more">***</span>
+                                </div>
+                                <p className="course-card__desc">{c.desc}</p>
+                                <div className="skeleton-pill" />
+                            </div>
+                        </article>
+                    </Link>
+                ))}
+            </div>
+
         </div>
     );
 };

@@ -10,7 +10,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #CAF0F8;
+    background: #5680E9;
 }
 
 
@@ -27,7 +27,7 @@
 }
 
 .registration-box {
-    background: #00B4D8;
+    background: #C1C8E4;
     padding: 0rem 2rem 2rem;
     border-radius: 20px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
@@ -57,7 +57,7 @@
 }
 
 .registration-btn {
-    background: #0077B6;
+    background: #8860D0;
     color: white;
     width: 100%;
     padding: 12px;

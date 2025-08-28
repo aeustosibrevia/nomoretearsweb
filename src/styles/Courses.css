@@ -7,14 +7,26 @@
     color:#fff;
 }
 
-.tabs{
-    display:flex; gap:10px; flex-wrap:wrap;
+.tabs-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 14px;
 }
-.tab{
-    border:0; cursor:pointer;
-    padding:8px 14px; border-radius:18px;
-    font-weight:700; color:#fff;
+
+.tabs {
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.tab {
+    border:0;
+    cursor:pointer;
+    padding:8px 14px;
+    border-radius:18px;
+    font-weight:700;
+    color:#fff;
     transition: transform .15s, box-shadow .15s, opacity .15s;
     box-shadow:0 6px 14px rgba(0,0,0,.18);
     opacity:.9;
@@ -25,6 +37,24 @@
 .tab--math{    background:#7D1913; }
 .tab--history{ background:#ECA04B; }
 .tab--ukr{     background:#5AB9EA; }
+
+.add-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: navy;
+    color: white;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+}
+.add-btn:hover {
+    background: #000080d9;
+}
 
 .course-cards{ display:flex; flex-direction:column; gap:16px; }
 

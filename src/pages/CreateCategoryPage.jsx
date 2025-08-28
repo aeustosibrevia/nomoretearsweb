@@ -26,6 +26,7 @@ const CreateCategoryPage = () => {
     };
 
     return(
+
         <form onSubmit={handleSubmit}>
             <input name="name" value={formData.name} onChange={handleChange} placeholder="Назва категорії" required />
             <button type="submit">Створити категорію</button>

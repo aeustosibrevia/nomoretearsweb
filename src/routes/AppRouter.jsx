@@ -13,6 +13,11 @@ import CourseDetailPage from "../pages/CourseDetailPage";
 import CoursesPage from "../pages/CoursesPage";
 import ModulePage from "../pages/ModulePage";
 import LessonPage from "../pages/LessonPage";
+import AdminModuleEditor from "../pages/AdminModuleEditor";
+import AdminUsersList from "../pages/AdminUsersList";
+import AdminUserDetail from "../pages/AdminUserDetail";
+import AdminCommentsPage from "../pages/AdminCommentsPage";
+
 
 const AppRouter = () => {
     return (
@@ -21,8 +26,15 @@ const AppRouter = () => {
             <Route path="/registration" element={<RegistrationPage/>}/>
             <Route path="/forgot-password" element={<ForgotPasswordPage/>}/>
             <Route path="/account" element={<AccountPage/>}/>
+
             <Route path="/admin/courses" element={<AdminPage/>}/>
             <Route path="/admin/create-category" element={<CreateCategoryPage/>}/>
+            <Route path="/admin/modules/:moduleId" element={<AdminModuleEditor />} />
+
+            <Route path="/admin/users" element={<AdminUsersList />} />
+            <Route path="/admin/users/:userId" element={<AdminUserDetail />} />
+            <Route path="/admin/comments" element={<AdminCommentsPage />} />
+
             <Route path="/shop" element={<MainShopPage/>}/>
             <Route path="/" element={<MainShopPage/>}/>
 

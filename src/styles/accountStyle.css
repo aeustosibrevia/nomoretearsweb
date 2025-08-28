@@ -80,7 +80,7 @@
     width: 100%;
     font-size: 1rem;
     font-weight: bold;
-    color: #003366;
+    color: #FFF;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -89,7 +89,7 @@
 
 .faq-answer {
     margin-top: 0.5rem;
-    color: #333;
+    color: #FFF;
 }
 
 .faq-toggle {
@@ -164,7 +164,7 @@ input {
     padding: 10px 12px;
     border-radius: 20px;
     border: none;
-    background-color: #a2e3f2;
+    background-color: #C1C8E4;
     margin-top: 6px;
     font-size: 16px;
     outline: none;
@@ -179,7 +179,7 @@ input {
     right: 15px;
     top: -15px;
     font-size: 12px;
-    color: #0073e6;
+    color: #000;
     cursor: pointer;
     text-decoration: underline;
 }

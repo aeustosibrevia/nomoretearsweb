@@ -24,13 +24,20 @@ const Header = () => {
                 <nav>
                     {user?.role === 'admin' ? (
                         <>
-                            <Link to="/admin/courses">Панель</Link>
+                            <Link to="/admin/courses">Панель курсів</Link>
                             <Link to="/admin/users">Користувачі</Link>
+                            <Link to="/admin/comments">Відгуки</Link>
                         </>
                     ) : (
                         <>
                             <Link to="/courses">Мої курси</Link>
                             <Link to="/shop">Магазин</Link>
+
+                            {/* убрать */}
+                            <Link to="/admin/courses">Панель курсів</Link>
+                            <Link to="/admin/users">Користувачі</Link>
+                            <Link to="/admin/comments">Відгуки</Link>
+
                         </>
                     )}
                 </nav>
