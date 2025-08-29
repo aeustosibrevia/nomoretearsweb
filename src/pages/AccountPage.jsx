@@ -1,9 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import logo from '../assets/logo.png';
 import phoneLogo from '../assets/phone_logo.png';
 import telegramLogo from '../assets/telegram_logo.png';
 import instagramLogo from '../assets/instagram_logo.png';
 import tiktokLogo from '../assets/tiktok_logo.png';
+import { getProfile, updateProfileEmail, changePassword } from '../services/api';
 
 
 
@@ -24,6 +25,41 @@ const FAQItem = ({ question, answer }) => {
 };
 
 const InfoForm = () => {
+    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
+    const [phone, setPhone] = useState('');
+    const [savingEmail, setSavingEmail] = useState(false);
+    const [msgEmail, setMsgEmail] = useState('');
+    const [birthDate, setBirthDate] = useState('');
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const me = await getProfile();
+                if (me?.username) setUsername(me.username);
+                if (me?.email) setEmail(me.email);
+            } catch (e) {
+            }
+        })();
+    }, []);
+
+    const handleSaveEmail = async () => {
+        setMsgEmail('');
+        if (!email?.trim()) {
+            setMsgEmail('Введіть email');
+            return;
+        }
+        try {
+            setSavingEmail(true);
+            const res = await updateProfileEmail(email.trim());
+            setMsgEmail(res.message || 'Пошта оновлена');
+        } catch (e) {
+            setMsgEmail(e.message || 'Помилка оновлення пошти');
+        } finally {
+            setSavingEmail(false);
+        }
+    };
+
     return (
         <div className="info-form-container">
             <h2 className="info-title">Основна інформація</h2>
@@ -36,46 +72,62 @@ const InfoForm = () => {
                 </div>
 
                 <div className="info-fields">
-                    <label>
-                        Прізвище Ім’я
-                        <input type="text" placeholder=" " />
+                    <label className="with-edit">
+                        Ім’я користувача
+                        <div className="input-wrapper">
+                            <input
+                                type="text"
+                                placeholder=" "
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                            />
+                            <span className="edit-link" onClick={() => {/* TODO: save username */}}>
+                                змінити
+                            </span>
+                        </div>
                     </label>
 
-                    <label>
+                    <label className="with-edit">
                         Дата народження
-                        <input type="date" />
+                        <div className="input-wrapper">
+                            <input
+                                type="date"
+                                value={birthDate}
+                                onChange={(e) => setBirthDate(e.target.value)}
+                            />
+                            <span className="edit-link" onClick={() => {/* TODO: save birthDate */}}>
+                                змінити
+                            </span>
+                        </div>
                     </label>
 
                     <label className="with-edit">
                         Номер телефону
-                        <span className="edit-link">змінити</span>
-                        <input type="tel" placeholder=" " />
+                        <div className="input-wrapper">
+                            <input
+                                type="tel"
+                                placeholder=" "
+                                value={phone}
+                                onChange={(e) => setPhone(e.target.value)}
+                            />
+                            <span className="edit-link" onClick={() => {/* TODO: save phone */}}>
+                                змінити
+                            </span>
+                        </div>
                     </label>
 
                     <label className="with-edit">
                         Пошта
-                        <span className="edit-link">змінити</span>
-                        <input type="email" placeholder=" " />
-                    </label>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-
-const PasswordForm = () => {
-    return (
-        <div className="password-form-container">
-            <h2 className="password-title">Налаштування</h2>
-            <div className="password-content">
-
-                <div className="password-fields">
-                    <label className="with-edit">
-                        Ваш пароль
                         <div className="input-wrapper">
-                            <span className="edit-link">змінити</span>
-                            <input type="password" placeholder=" " />
+                            <input
+                                type="email"
+                                placeholder=" "
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                            />
+                            <span className="edit-link" onClick={() => {}}>
+                                змінити
+                            </span>
                         </div>
                     </label>
                 </div>
@@ -84,6 +136,68 @@ const PasswordForm = () => {
     );
 };
 
+const PasswordForm = () => {
+    const [currentPassword, setCurrentPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [savingPwd, setSavingPwd] = useState(false);
+    const [msgPwd, setMsgPwd] = useState('');
+
+    const handleChangePwd = async () => {
+        setMsgPwd('');
+        if (!currentPassword || !newPassword) {
+            setMsgPwd('Заповніть обидва поля');
+            return;
+        }
+        try {
+            setSavingPwd(true);
+            const res = await changePassword({ currentPassword, newPassword });
+            setMsgPwd(res.message || 'Пароль змінено');
+            setCurrentPassword('');
+            setNewPassword('');
+        } catch (e) {
+            setMsgPwd(e.message || 'Помилка зміни пароля');
+        } finally {
+            setSavingPwd(false);
+        }
+    };
+
+    return (
+        <div className="password-form-container">
+            <h2 className="password-title">Зміна пароля</h2>
+            <div className="password-content">
+                <div className="password-fields">
+                    <label className="with-edit">
+                        Старий пароль
+                        <div className="input-wrapper">
+                            <input
+                                type="password"
+                                placeholder=" "
+                                value={currentPassword}
+                                onChange={(e) => setCurrentPassword(e.target.value)}
+                            />
+                        </div>
+                    </label>
+
+                    <label className="with-edit">
+                        Новий пароль
+                        <div className="input-wrapper">
+                            <input
+                                type="password"
+                                placeholder=" "
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                            />
+                            <span className="edit-link" onClick={savingPwd ? undefined : handleChangePwd}>
+                                {savingPwd ? '...' : 'змінити'}
+                            </span>
+                        </div>
+                        {msgPwd && <div className="field-msg">{msgPwd}</div>}
+                    </label>
+                </div>
+            </div>
+        </div>
+    );
+};
 
 
 const Contacts = () => {

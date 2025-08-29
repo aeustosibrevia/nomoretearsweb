@@ -49,7 +49,8 @@ export default function AdminModuleEditor() {
 
             <section className="lessons-section">
                 <div className="lessons-col">
-                    <div className="lessons-col-title">Уроки</div>
+                    <div className="lessons-col-title">Уроки <button className="add-btn" >+</button></div>
+
                     <div className="lesson-tiles">
                         {mod.lessons.map((l) => (
                             <article key={l.id} className="lesson-tile">
@@ -57,9 +58,13 @@ export default function AdminModuleEditor() {
                                     <span className="lesson-name">{l.title}</span>
                                 </header>
                                 <div className="tile-meta">YouTube: {l.youtubeId || "—"}</div>
+                                <div className="tile-meta">Опис:—</div>
+
                                 <div className="tile-meta">Конспект: {l.notesUrl ? "є" : "—"}</div>
                                 <div className="tile-actions">
                                     <button className="tile-btn">Змінити відео</button>
+                                    <button className="tile-btn">Змінити Опис</button>
+
                                     <button className="tile-btn">Змінити конспект</button>
                                 </div>
                             </article>

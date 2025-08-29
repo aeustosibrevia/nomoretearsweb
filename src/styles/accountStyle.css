@@ -170,20 +170,53 @@ input {
     outline: none;
 }
 
-.with-edit {
+.with-edit { position: relative; }
+
+.input-wrapper {
     position: relative;
+    width: 100%;
+    margin-top: 6px;
+}
+
+input {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 20px;
+    border: none;
+    background-color: #C1C8E4;
+    margin-top: 0;
+    font-size: 16px;
+    outline: none;
 }
 
 .edit-link {
     position: absolute;
-    right: 15px;
-    top: -15px;
+    right: 12px;
+    top: calc(100% + 4px);
     font-size: 12px;
     color: #000;
     cursor: pointer;
     text-decoration: underline;
+    line-height: 1;
+    user-select: none;
 }
 
+.field-msg {
+    margin-top: 22px;
+    font-size: 13px;
+    color: #fff;
+    font-weight: 600;
+}
+
+.info-fields, .password-fields {
+    gap: 22px;
+}
+
+.edit-link[disabled] {
+    pointer-events: none;
+    opacity: .6;
+    text-decoration: none;
+}
 
 .password-form-container {
     background: none;

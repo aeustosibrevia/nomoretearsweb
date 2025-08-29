@@ -1,5 +1,43 @@
 const API_BASE = 'http://localhost:3000';
 
+function authHeaders() {
+    const token = localStorage.getItem('token');
+    return {
+        'Content-Type': 'application/json',
+        ...(token ? { Authorization: `Bearer ${token}` } : {})
+    };
+}
+export async function getProfile() {
+    const resp = await fetch(`${API_BASE}/api/auth/profile`, {
+        method: 'GET',
+        headers: authHeaders()
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.errors?.[0] || data.error || 'Не вдалося отримати профіль');
+    return data;
+}
+
+export async function updateProfileEmail(email) {
+    const resp = await fetch(`${API_BASE}/api/auth/profile`, {
+        method: 'PUT',
+        headers: authHeaders(),
+        body: JSON.stringify({ email })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.errors?.[0] || data.error || 'Не вдалося оновити email');
+    return data;
+}
+
+export async function changePassword({ currentPassword, newPassword }) {
+    const resp = await fetch(`${API_BASE}/api/auth/changePassword`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ currentPassword, newPassword })
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.errors?.[0] || data.error || 'Не вдалося змінити пароль');
+    return data;
+}
 export async function register({ username, email, password}) {
     const response = await fetch(`${API_BASE}/api/auth/register`, {
         method: "POST",
@@ -35,6 +73,13 @@ export async function login({ email, password}) {
 
     return data;
 }
+
+
+
+
+
+
+
 
 export async function createCategory(data) {
     const token = localStorage.getItem('token');

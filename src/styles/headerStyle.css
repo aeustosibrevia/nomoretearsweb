@@ -27,15 +27,19 @@ nav {
 }
 
 nav a {
-    text-decoration: none;
-    font-weight: bold;
-    font-family: 'Inter', sans-serif;
-    color: white;
-    background-color: #8860D0;
-    padding: 8px 16px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 16px;
     border-radius: 20px;
-    display: inline-block;
-    transition: transform 0.2s, box-shadow 0.2s;
+    background-color: #8860D0;
+    color: #fff;
+    text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    line-height: 1;
+    transition: transform .2s, box-shadow .2s;
 }
 
 nav a:hover {
@@ -45,31 +49,32 @@ nav a:hover {
 
 }
 
-
 .myAccount {
-    text-decoration: none;
-    font-weight: bold;
-    font-family: 'Inter', sans-serif;
-
+    display: flex;
     align-items: center;
-    gap: 5px;
-    color: white;
-    background-color: #8860D0;
-    padding: 8px 16px;
+    gap: 12px;
+    background: transparent;
+    padding: 0;
+    border-radius: 0;
+}
+
+.myAccount .link-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    padding: 0 16px;
     border-radius: 20px;
-    display: inline-block;
-    transition: transform 0.2s, box-shadow 0.2s;
-}
-.myAccount,
-.myAccount a {
-    color: white;
-}
-
-.myAccount a {
+    background-color: #8860D0;
+    color: #fff;
     text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-weight: bold;
+    line-height: 1;
+    transition: transform .2s, box-shadow .2s;
 }
 
-.myAccount:hover {
+.myAccount .link-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 10px rgba(0,0,0,.15);
 }
