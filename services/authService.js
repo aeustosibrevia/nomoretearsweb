@@ -8,7 +8,7 @@ const createError = require('http-errors');
 
 const SALT_ROUNDS = 12;
 
-exports.register = async ({username, password, email}) => {
+exports.register = async ({username, password, email, first_name, last_name}) => {
     const existingUserByUsername = await User.findOne({
         where: {username: username.trim().toLowerCase()}
     });
@@ -32,7 +32,9 @@ exports.register = async ({username, password, email}) => {
         password: hashedPassword,
         created_at: new Date(),
         role: 'student',
-        is_active: true
+        is_active: true,
+        first_name: first_name,
+        last_name: last_name
     });
 
     return {
@@ -102,7 +104,8 @@ exports.getProfile = async (authUser) => {
 };
 
 exports.updateProfile = async (authUser, body) => {
-    const {email} = body;
+    const { email, profile_picture, phone_number, birthday, first_name, last_name } = body;
+
     const user = await User.findByPk(authUser.userId);
     if (!user || !user.is_active) {
         throw createError(404, 'Користувача не знайдено');
@@ -110,12 +113,44 @@ exports.updateProfile = async (authUser, body) => {
 
     if (email && email.trim().toLowerCase() !== user.email) {
         const emailExists = await User.findOne({
-            where: {email: email.trim().toLowerCase()}
+            where: { email: email.trim().toLowerCase() }
         });
         if (emailExists) {
             throw createError(409, 'Цей email уже використовується');
         }
         user.email = email.trim().toLowerCase();
+    }
+
+    if (profile_picture !== undefined) {
+        user.profile_picture = profile_picture.trim();
+    }
+
+    if (phone_number !== undefined) {
+        const cleaned = phone_number.replace(/[^\d]/g, ''); // оставляем только цифры
+        if (cleaned.length < 7 || cleaned.length > 15) {
+            throw createError(400, 'Невірний номер телефону');
+        }
+        const phoneRegex = /^\+?[0-9\s\-()]{7,20}$/;
+        if (!phoneRegex.test(phone_number)) {
+            throw createError(400, 'Невірний формат номера телефону');
+        }
+        user.phone_number = phone_number.trim();
+    }
+
+    if (birthday !== undefined) {
+        const date = new Date(birthday);
+        if (isNaN(date.getTime())) {
+            throw createError(400, 'Невірний формат дати народження');
+        }
+        user.birthday = date;
+    }
+
+    if (first_name !== undefined) {
+        user.first_name = first_name.trim();
+    }
+
+    if (last_name !== undefined) {
+        user.last_name = last_name.trim();
     }
 
     await user.save();
@@ -126,10 +161,16 @@ exports.updateProfile = async (authUser, body) => {
             id: user.id,
             username: user.username,
             email: user.email,
-            role: user.role
+            role: user.role,
+            profile_picture: user.profile_picture,
+            phone_number: user.phone_number,
+            birthday: user.birthday,
+            first_name: user.first_name,
+            last_name: user.last_name
         }
     };
 };
+
 
 exports.changePassword = async (authUser, body) => {
     const {currentPassword, newPassword} = body;
@@ -141,6 +182,14 @@ exports.changePassword = async (authUser, body) => {
     const isCurrentPasswordValid = await bcrypt.compare(currentPassword, user.password);
     if (!isCurrentPasswordValid) {
         throw createError(400, 'Неправильний поточний пароль');
+    }
+
+    if (newPassword.length < 8) {
+        throw createError(400,'Пароль має містити щонайменше 8 символів');
+    }
+
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(newPassword)) {
+        throw createError(400,'Пароль має містити принаймні одну малу літеру, одну велику літеру та одну цифру');
     }
 
     user.password = await bcrypt.hash(newPassword, SALT_ROUNDS);
@@ -185,6 +234,14 @@ exports.resetPassword = async ({token, newPassword}) => {
 
     if (!user) {
         throw createError(400, 'Недійсний або протермінований токен');
+    }
+
+    if (newPassword.length < 8) {
+        throw createError(400,'Пароль має містити щонайменше 8 символів');
+    }
+
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(newPassword)) {
+        throw createError(400,'Пароль має містити принаймні одну малу літеру, одну велику літеру та одну цифру');
     }
 
     user.password = await bcrypt.hash(newPassword, SALT_ROUNDS);

@@ -21,7 +21,12 @@ const User = sequelize.define('user', {
     created_at: DataTypes.DATE,
     is_active: DataTypes.BOOLEAN,
     reset_token: DataTypes.TEXT,
-    reset_token_expires: DataTypes.BIGINT
+    reset_token_expires: DataTypes.BIGINT,
+    profile_picture: DataTypes.TEXT,
+    phone_number: DataTypes.STRING,
+    birthday: DataTypes.DATE,
+    first_name: DataTypes.STRING,
+    last_name: DataTypes.STRING
 }, {
     tableName: 'user',
     timestamps: false

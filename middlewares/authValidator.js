@@ -1,7 +1,7 @@
 const validator = require('validator');
 
 exports.validateRegistration = (req, res, next) => {
-    const { username, password, email } = req.body;
+    const { username, password, email, first_name, last_name } = req.body;
     const errors = [];
 
     if (!username || username.length < 3 || username.length > 30) {
@@ -24,6 +24,13 @@ exports.validateRegistration = (req, res, next) => {
         errors.push('Введіть коректну електронну адресу');
     }
 
+    if (!first_name){
+        errors.push("Ім'я обов'язкове");
+    }
+
+    if(!last_name){
+        errors.push("Прізвище обов'язкове");
+    }
     if (errors.length > 0) {
         return res.status(400).json({ errors });
     }
@@ -36,7 +43,7 @@ exports.validateLogin = (req, res, next) => {
     const errors = [];
 
     if (!email || !password) {
-        errors.push('Ім’я користувача та пароль обов’язкові');
+        errors.push('Пошта та пароль обов’язкові');
     }
 
     if (errors.length > 0) {
@@ -45,6 +52,25 @@ exports.validateLogin = (req, res, next) => {
 
     next();
 };
+
+exports.validatePasswordReset = (req, res, next) => {
+    const { email, password } = req.body;
+    const errors = [];
+
+    if (!password || password.length < 8) {
+        errors.push('Пароль має містити щонайменше 8 символів');
+    }
+
+    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
+        errors.push('Пароль має містити принаймні одну малу літеру, одну велику літеру та одну цифру');
+    }
+
+    if (errors.length > 0) {
+        return res.status(400).json({ errors });
+    }
+
+    next();
+}
 
 
 
