@@ -17,17 +17,16 @@ export async function getProfile() {
     return data;
 }
 
-export async function updateProfileEmail(email) {
-    const resp = await fetch(`${API_BASE}/api/auth/profile`, {
+export async function updateProfile(payload) {
+    const res = await fetch(`${API_BASE}/api/auth/profile`, {
         method: 'PUT',
         headers: authHeaders(),
-        body: JSON.stringify({ email })
+        body: JSON.stringify(payload),
     });
-    const data = await resp.json();
-    if (!resp.ok) throw new Error(data.errors?.[0] || data.error || 'Не вдалося оновити email');
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || data.message || 'Помилка оновлення профілю');
     return data;
 }
-
 export async function changePassword({ currentPassword, newPassword }) {
     const resp = await fetch(`${API_BASE}/api/auth/changePassword`, {
         method: 'POST',
@@ -76,7 +75,16 @@ export async function login({ email, password}) {
 
 
 
-
+export async function getCoursesByCategorySlug(slug) {
+    const res = await fetch(`${API_BASE}/courses/${slug}`, {
+        headers: { 'Content-Type': 'application/json' }
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data?.error || 'Не вдалося завантажити курси');
+    }
+    return data;
+}
 
 
 
@@ -118,4 +126,41 @@ export async function fetchCategories() {
     }
 
     return data.categories || data;
+}
+
+
+export async function getCourseBySlugs(categorySlug, courseSlug) {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${API_BASE}/courses/${categorySlug}/${courseSlug}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {})
+        }
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data?.error || 'Не вдалося завантажити курс');
+    }
+    return data;
+}
+
+export async function enrollInCourse(courseId) {
+    const token = localStorage.getItem('token');
+    if (!token) throw new Error('Потрібен вхід у систему.');
+
+    const res = await fetch(`${API_BASE}/api/enrollments/${Number(courseId)}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+
+    let data = null;
+    try { data = await res.json(); } catch {}
+
+    if (!res.ok) {
+        const msg = data?.error || data?.message || `Помилка ${res.status}`;
+        throw new Error(msg);
+    }
+    return data;
 }

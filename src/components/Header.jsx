@@ -37,7 +37,7 @@ const Header = () => {
     return (
         <header className="Header">
             <div className="left-block">
-                <img src={logo} alt="Logo" className="logo" />
+                <Link to="/"><img src={logo} alt="Logo" className="logo" /> </Link>
                 <nav>
                     <Link to="/courses">Мої курси</Link>
                     <Link to="/shop">Магазин</Link>
