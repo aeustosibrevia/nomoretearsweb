@@ -13,7 +13,11 @@ router.put('/profile', authMiddleware, authController.updateProfile);
 router.post('/changePassword', authMiddleware, authController.changePassword);
 router.post('/request-password-reset', authController.requestPasswordReset);
 router.post('/reset-password', authController.resetPassword);
-
+router.get('/getAllUsers', authMiddleware, authController.getAllUsers);
+router.put('/roles/instructor/:username', authMiddleware, authController.giveInstructor);
+router.delete('/roles/instructor/:username', authMiddleware, authController.revokeInstructor);
+router.put('/roles/admin/:username', authMiddleware, authController.giveAdmin);
+router.delete('/roles/admin/:username', authMiddleware, authController.revokeAdmin);
 
 router.get('/auth/google',
     passport.authenticate('google', { scope: ['profile', 'email'] })

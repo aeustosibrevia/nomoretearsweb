@@ -26,7 +26,12 @@ const User = sequelize.define('user', {
     phone_number: DataTypes.STRING,
     birthday: DataTypes.DATE,
     first_name: DataTypes.STRING,
-    last_name: DataTypes.STRING
+    last_name: DataTypes.STRING,
+    is_superadmin: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+    },
 }, {
     tableName: 'user',
     timestamps: false
