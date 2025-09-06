@@ -209,7 +209,3 @@ exports.getBySlugs = async (categorySlug, courseSlug, lessonSlug, user) => {
 
     return lesson;
 };
-
-
-
-

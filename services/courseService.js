@@ -136,4 +136,3 @@ exports.getBySlugs = async (categorySlug, courseSlug, user) => {
 
     return course;
 };
-

@@ -52,25 +52,3 @@ exports.validateLogin = (req, res, next) => {
 
     next();
 };
-
-exports.validatePasswordReset = (req, res, next) => {
-    const { email, password } = req.body;
-    const errors = [];
-
-    if (!password || password.length < 8) {
-        errors.push('Пароль має містити щонайменше 8 символів');
-    }
-
-    if (!/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password)) {
-        errors.push('Пароль має містити принаймні одну малу літеру, одну велику літеру та одну цифру');
-    }
-
-    if (errors.length > 0) {
-        return res.status(400).json({ errors });
-    }
-
-    next();
-}
-
-
-

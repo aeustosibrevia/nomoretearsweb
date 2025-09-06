@@ -139,8 +139,6 @@ exports.getQuizzesByLesson = async (lessonId, user) => {
 
     return await Quiz.findAll({ where: { lesson_id: lessonId } });
 };
-
-
 // exports.getQuizResult = async (userId, quizId) => {
 //     const questions = await Question.findAll({
 //         where: { quiz_id: quizId },

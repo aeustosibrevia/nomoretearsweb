@@ -27,4 +27,3 @@ router.get('/reviews', reviewController.getReviewsByCourse);
 router.get('/reviews/average', reviewController.getAverageRating);
 
 module.exports = router;
-

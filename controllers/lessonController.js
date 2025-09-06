@@ -80,4 +80,3 @@ exports.getLessonBySlugs = async (req, res, next) => {
         next(err);
     }
 };
-

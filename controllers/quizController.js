@@ -82,4 +82,3 @@ exports.getQuizResult = async (req, res, next) => {
         next(err);
     }
 };
-
