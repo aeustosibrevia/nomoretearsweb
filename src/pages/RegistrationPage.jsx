@@ -1,13 +1,15 @@
-import {Link, useNavigate} from "react-router-dom";
-import {useState} from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from 'react';
 import '../styles/registrationStyle.css';
 import logo from '../assets/logo.png';
-import {register} from '../services/api';
+import { register } from '../services/api';
 
 const RegistrationPage = () => {
 
     const [formData, setFormData] = useState({
         username: '',
+        first_name: '',
+        last_name: '',
         email: '',
         password: ''
     });
@@ -16,7 +18,7 @@ const RegistrationPage = () => {
     const navigate = useNavigate();
 
     const handleChange = (e) => {
-        setFormData({...formData, [e.target.name]: e.target.value});
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e) => {
@@ -29,7 +31,7 @@ const RegistrationPage = () => {
             setSuccess(result.message);
             setTimeout(() => navigate('/login'), 1500);
         } catch (err) {
-            setError(err.message);
+            setError(err.message || 'Помилка реєстрації');
         }
     };
 
@@ -37,27 +39,71 @@ const RegistrationPage = () => {
         <div className="registration-page">
             <div className="registration-container">
                 <div className="registration-content">
-                    <img src={logo} alt="Logo" className="logo"/>
+                    <img src={logo} alt="Logo" className="logo" />
                     <div className="registration-box">
                         <h2>Реєстрація</h2>
                         <form className="registration-form" onSubmit={handleSubmit}>
-                            <input name="username" type="text" placeholder="Ім'я користувача" value={formData.username}
-                                   onChange={handleChange} required/>
-                            <input name="email" type="email" placeholder="Email" value={formData.email}
-                                   onChange={handleChange} required/>
-                            <input name="password" type="password" placeholder="Пароль" value={formData.password}
-                                   onChange={handleChange} required/>
-                            <button type="submit" className="registration-btn">Зареєструватись</button>
+                            <input
+                                name="username"
+                                type="text"
+                                placeholder="Логін"
+                                value={formData.username}
+                                onChange={handleChange}
+                                required
+                            />
+
+                            <input
+                                name="first_name"
+                                type="text"
+                                placeholder="Ім'я"
+                                value={formData.first_name}
+                                onChange={handleChange}
+                                required
+                            />
+
+                            <input
+                                name="last_name"
+                                type="text"
+                                placeholder="Прізвище"
+                                value={formData.last_name}
+                                onChange={handleChange}
+                                required
+                            />
+
+                            <input
+                                name="email"
+                                type="email"
+                                placeholder="Email"
+                                value={formData.email}
+                                onChange={handleChange}
+                                required
+                            />
+
+                            <input
+                                name="password"
+                                type="password"
+                                placeholder="Пароль"
+                                value={formData.password}
+                                onChange={handleChange}
+                                required
+                            />
+
+                            <button type="submit" className="registration-btn">
+                                Зареєструватись
+                            </button>
+
                             <div className="log-link">
                                 <Link to="/login">Вже є аккаунт? Вхід</Link>
                             </div>
-                            {error && <p style={{color: 'red'}}>{error}</p>}
-                            {success && <p style={{color: 'green'}}>{success}</p>}
+
+                            {error && <p style={{ color: 'red' }}>{error}</p>}
+                            {success && <p style={{ color: 'green' }}>{success}</p>}
                         </form>
                     </div>
                 </div>
             </div>
         </div>
     );
-}
+};
+
 export default RegistrationPage;

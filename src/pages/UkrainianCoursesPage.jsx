@@ -19,7 +19,7 @@ function extractImageUrl(img_data) {
 }
 
 export default function UkrainianCoursesPage() {
-    const slug = 'ukrainska';
+    const slug = 'ukrayinska-mova';
     const themeClass = 'theme-ukr';
     const [category, setCategory] = useState(null);
     const [loading, setLoading] = useState(true);

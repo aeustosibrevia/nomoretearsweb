@@ -4,7 +4,7 @@ import phoneLogo from '../assets/phone_logo.png';
 import telegramLogo from '../assets/telegram_logo.png';
 import instagramLogo from '../assets/instagram_logo.png';
 import tiktokLogo from '../assets/tiktok_logo.png';
-import { getProfile, updateProfileEmail, changePassword } from '../services/api';
+import { getProfile, updateProfile, changePassword } from '../services/api';
 
 
 
@@ -24,111 +24,186 @@ const FAQItem = ({ question, answer }) => {
     );
 };
 
+const toYMD = (val) => {
+    if (!val) return '';
+    const d = new Date(val);
+    return Number.isNaN(d.getTime()) ? '' : d.toISOString().slice(0, 10);
+};
+
 const InfoForm = () => {
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [phone, setPhone] = useState('');
-    const [savingEmail, setSavingEmail] = useState(false);
-    const [msgEmail, setMsgEmail] = useState('');
-    const [birthDate, setBirthDate] = useState('');
+    const [profile, setProfile] = useState(null);
+    const [savingKey, setSavingKey] = useState(null);
+    const [msgs, setMsgs] = useState({});
+
+    const refresh = async () => {
+        const me = await getProfile();
+        setProfile(me || {});
+    };
 
     useEffect(() => {
-        (async () => {
-            try {
-                const me = await getProfile();
-                if (me?.username) setUsername(me.username);
-                if (me?.email) setEmail(me.email);
-            } catch (e) {
-            }
-        })();
+        refresh().catch(() => {});
     }, []);
 
-    const handleSaveEmail = async () => {
-        setMsgEmail('');
-        if (!email?.trim()) {
-            setMsgEmail('Введіть email');
-            return;
-        }
+    const save = async (payload, key) => {
+        setMsgs((m) => ({ ...m, [key]: '' }));
         try {
-            setSavingEmail(true);
-            const res = await updateProfileEmail(email.trim());
-            setMsgEmail(res.message || 'Пошта оновлена');
+            setSavingKey(key);
+            const res = await updateProfile(payload);
+            setMsgs((m) => ({ ...m, [key]: res?.message || 'Збережено' }));
+            await refresh();
         } catch (e) {
-            setMsgEmail(e.message || 'Помилка оновлення пошти');
+            setMsgs((m) => ({ ...m, [key]: e?.message || 'Помилка збереження' }));
         } finally {
-            setSavingEmail(false);
+            setSavingKey(null);
         }
     };
+
+    const isSaving = (k) => savingKey === k;
+
+    if (!profile) return null;
 
     return (
         <div className="info-form-container">
             <h2 className="info-title">Основна інформація</h2>
+
             <div className="info-content">
+                {/* Фото */}
                 <div className="info-photo">
                     <div className="photo-placeholder">
-                        <i className="icon-user" />
+                        {profile.profile_picture ? (
+                            <img src={profile.profile_picture} alt="profile" />
+                        ) : (
+                            <i className="icon-user" />
+                        )}
                     </div>
-                    <button className="change-photo">Змінити фото</button>
+                    <button
+                        className="change-photo"
+                        onClick={
+                            isSaving('profile_picture')
+                                ? undefined
+                                : async () => {
+                                    const url = prompt('Вставте URL фото:', profile.profile_picture || '');
+                                    if (url != null) await save({ profile_picture: url.trim() }, 'profile_picture');
+                                }
+                        }
+                    >
+                        {isSaving('profile_picture') ? '...' : 'Змінити фото'}
+                    </button>
+                    {msgs.profile_picture && <div className="field-msg">{msgs.profile_picture}</div>}
                 </div>
 
                 <div className="info-fields">
                     <label className="with-edit">
                         Ім’я користувача
                         <div className="input-wrapper">
-                            <input
-                                type="text"
-                                placeholder=" "
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                            />
-                            <span className="edit-link" onClick={() => {/* TODO: save username */}}>
-                                змінити
-                            </span>
+                            <input type="text" value={profile.username || ''} readOnly />
+                            <span className="edit-link edit-link--disabled">змінити</span>
                         </div>
+                    </label>
+
+                    <label className="with-edit">
+                        Ім'я
+                        <div className="input-wrapper">
+                            <input type="text" value={profile.first_name || ''} readOnly placeholder="Ім'я" />
+                            <span
+                                className="edit-link"
+                                onClick={
+                                    isSaving('first_name')
+                                        ? undefined
+                                        : async () => {
+                                            const v = prompt("Введіть ім'я", profile.first_name || '');
+                                            if (v != null) await save({ first_name: v.trim() }, 'first_name');
+                                        }
+                                }
+                            >
+                {isSaving('first_name') ? '...' : 'змінити'}
+              </span>
+                        </div>
+                        {msgs.first_name && <div className="field-msg">{msgs.first_name}</div>}
+                    </label>
+
+                    <label className="with-edit">
+                        Прізвище
+                        <div className="input-wrapper">
+                            <input type="text" value={profile.last_name || ''} readOnly placeholder="Прізвище" />
+                            <span
+                                className="edit-link"
+                                onClick={
+                                    isSaving('last_name')
+                                        ? undefined
+                                        : async () => {
+                                            const v = prompt('Введіть прізвище', profile.last_name || '');
+                                            if (v != null) await save({ last_name: v.trim() }, 'last_name');
+                                        }
+                                }
+                            >
+                {isSaving('last_name') ? '...' : 'змінити'}
+              </span>
+                        </div>
+                        {msgs.last_name && <div className="field-msg">{msgs.last_name}</div>}
                     </label>
 
                     <label className="with-edit">
                         Дата народження
                         <div className="input-wrapper">
-                            <input
-                                type="date"
-                                value={birthDate}
-                                onChange={(e) => setBirthDate(e.target.value)}
-                            />
-                            <span className="edit-link" onClick={() => {/* TODO: save birthDate */}}>
-                                змінити
-                            </span>
+                            <input type="date" value={toYMD(profile.birthday)} readOnly />
+                            <span
+                                className="edit-link"
+                                onClick={
+                                    isSaving('birthday')
+                                        ? undefined
+                                        : async () => {
+                                            const v = prompt('YYYY-MM-DD', toYMD(profile.birthday));
+                                            if (v != null) await save({ birthday: v }, 'birthday');
+                                        }
+                                }
+                            >
+                {isSaving('birthday') ? '...' : 'змінити'}
+              </span>
                         </div>
+                        {msgs.birthday && <div className="field-msg">{msgs.birthday}</div>}
                     </label>
 
                     <label className="with-edit">
                         Номер телефону
                         <div className="input-wrapper">
-                            <input
-                                type="tel"
-                                placeholder=" "
-                                value={phone}
-                                onChange={(e) => setPhone(e.target.value)}
-                            />
-                            <span className="edit-link" onClick={() => {/* TODO: save phone */}}>
-                                змінити
-                            </span>
+                            <input type="tel" value={profile.phone_number || ''} readOnly placeholder="+380..." />
+                            <span
+                                className="edit-link"
+                                onClick={
+                                    isSaving('phone_number')
+                                        ? undefined
+                                        : async () => {
+                                            const v = prompt('Введіть номер телефону', profile.phone_number || '');
+                                            if (v != null) await save({ phone_number: v.trim() }, 'phone_number');
+                                        }
+                                }
+                            >
+                {isSaving('phone_number') ? '...' : 'змінити'}
+              </span>
                         </div>
+                        {msgs.phone_number && <div className="field-msg">{msgs.phone_number}</div>}
                     </label>
 
                     <label className="with-edit">
                         Пошта
                         <div className="input-wrapper">
-                            <input
-                                type="email"
-                                placeholder=" "
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                            <span className="edit-link" onClick={() => {}}>
-                                змінити
-                            </span>
+                            <input type="email" value={profile.email || ''} readOnly />
+                            <span
+                                className="edit-link"
+                                onClick={
+                                    isSaving('email')
+                                        ? undefined
+                                        : async () => {
+                                            const v = prompt('Введіть email', profile.email || '');
+                                            if (v != null) await save({ email: v.trim() }, 'email');
+                                        }
+                                }
+                            >
+                {isSaving('email') ? '...' : 'змінити'}
+              </span>
                         </div>
+                        {msgs.email && <div className="field-msg">{msgs.email}</div>}
                     </label>
                 </div>
             </div>

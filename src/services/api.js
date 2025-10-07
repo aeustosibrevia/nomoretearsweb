@@ -37,13 +37,15 @@ export async function changePassword({ currentPassword, newPassword }) {
     if (!resp.ok) throw new Error(data.errors?.[0] || data.error || 'Не вдалося змінити пароль');
     return data;
 }
-export async function register({ username, email, password}) {
+
+
+export async function register({ username, first_name, last_name, email, password}) {
     const response = await fetch(`${API_BASE}/api/auth/register`, {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ username, email, password})
+        body: JSON.stringify({ username, first_name, last_name, email, password})
     });
 
     const data = await response.json();
@@ -144,23 +146,127 @@ export async function getCourseBySlugs(categorySlug, courseSlug) {
     return data;
 }
 
-export async function enrollInCourse(courseId) {
+export async function enrollInCourse(username, courseId) {
     const token = localStorage.getItem('token');
-    if (!token) throw new Error('Потрібен вхід у систему.');
-
-    const res = await fetch(`${API_BASE}/api/enrollments/${Number(courseId)}`, {
+    const res = await fetch(`${API_BASE}/api/enrollments/${encodeURIComponent(username)}/${courseId}`, {
         method: 'POST',
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Content-Type': 'application/json',
+            ...(token ? { Authorization: `Bearer ${token}` } : {})
+        }
+    });
+    const data = await res.json();
+    if (!res.ok) {
+        throw new Error(data.error || data.message || 'Не вдалося записатись');
+    }
+    return data;
+}
+
+
+export async function getMyEnrollments() {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${API_BASE}/api/enrollments/me`, {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
         }
     });
 
-    let data = null;
-    try { data = await res.json(); } catch {}
-
+    const data = await res.json();
     if (!res.ok) {
-        const msg = data?.error || data?.message || `Помилка ${res.status}`;
-        throw new Error(msg);
+        throw new Error(data?.error || 'Не вдалося отримати список записів на курси');
     }
     return data;
+}
+
+
+export async function getAllUsers() {
+    const token = localStorage.getItem('token');
+    const res = await fetch(`${API_BASE}/api/auth/getAllUsers`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            Authorization: token ? `Bearer ${token}` : '',
+        },
+    });
+
+    if (!res.ok) {
+        let msg = 'Не вдалося отримати користувачів';
+        try {
+            const err = await res.json();
+            if (err?.message) msg = err.message;
+        } catch (_) {}
+        throw new Error(msg);
+    }
+
+    return res.json();
+}
+
+
+
+export async function fetchCourseSlugs({ onlyPublished = false } = {}) {
+    const qs = new URLSearchParams({ onlyPublished: String(!!onlyPublished) });
+    const res = await fetch(`${API_BASE}/api/courses/slugs?${qs.toString()}`);
+    if (!res.ok) throw new Error('Помилка завантаження курсів');
+    return res.json();
+}
+
+
+export async function fileToBase64(file) {
+    if (!file) return null;
+    const reader = new FileReader();
+    return new Promise((resolve, reject) => {
+        reader.onload = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+    });
+}
+
+export async function createCourse(payload) {
+    const resp = await fetch(`${API_BASE}/api/courses`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify(payload),
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || `Помилка створення курсу (${resp.status})`);
+    return data;
+}
+
+export async function createLesson(payload) {
+    const resp = await fetch(`${API_BASE}/api/lessons`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify(payload),
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || `Помилка створення уроку (${resp.status})`);
+    return data;
+}
+
+
+export async function createReview({ course_id, rating, comment }) {
+    const resp = await fetch(`${API_BASE}/api/reviews`, {
+        method: 'POST',
+        headers: authHeaders(),
+        body: JSON.stringify({ course_id, rating, comment }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) throw new Error(data.error || data.message || `Помилка створення відгуку (${resp.status})`);
+    return data;
+}
+
+
+export async function fetchAllReviews() {
+    const res = await fetch(`${API_BASE}/api/reviews`, {
+        method: "GET",
+        headers: authHeaders(),
+    });
+    if (!res.ok) {
+        let details = "";
+        try { details = JSON.stringify(await res.json()); } catch (_) {}
+        throw new Error(`GET /reviews failed: ${res.status} ${res.statusText} ${details}`);
+    }
+    return res.json();
 }

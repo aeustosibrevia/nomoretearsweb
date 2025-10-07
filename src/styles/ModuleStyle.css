@@ -160,6 +160,107 @@
     text-decoration:underline;
 }
 
+
+
+.review-panel {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 340px;
+    max-width: calc(100vw - 24px);
+    background: #fff;
+    border-top-left-radius: 12px;
+    border-bottom-left-radius: 12px;
+    box-shadow: 0 12px 28px rgba(0,0,0,.18);
+    transform: translateX(110%);
+    transition: transform .35s ease;
+    z-index: 1000;
+}
+
+.review-panel.open {
+    transform: translateX(0);
+}
+
+.review-body {
+    padding: 14px 16px 16px;
+    display: grid;
+    gap: 10px;
+}
+
+.review-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.review-title {
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.review-close {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    padding: 6px 8px;
+    border-radius: 8px;
+}
+.review-close:hover { background: #f2f3ff; }
+
+.stars {
+    display: inline-flex;
+    gap: 6px;
+}
+.star-btn {
+    font-size: 22px;
+    line-height: 1;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: transform .08s ease;
+}
+.star-btn:active { transform: scale(.95); }
+.star-btn[aria-pressed="true"] { color: #f59e0b; }
+
+.review-textarea {
+    width: 100%;
+    min-height: 88px;
+    resize: vertical;
+    padding: 10px;
+    border: 1px solid #d9defa;
+    border-radius: 10px;
+    outline: none;
+}
+.review-textarea:focus { border-color: #7c88f2; box-shadow: 0 0 0 3px #7c88f233; }
+
+.review-actions {
+    display: flex;
+    gap: 8px;
+}
+.btn-primary {
+    background: #3b5bdb;
+    color: #fff;
+    border: 0;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.btn-ghost {
+    background: transparent;
+    border: 1px solid #cfd6ff;
+    color: #2d2f38;
+    padding: 10px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.review-msg-ok { color: #0a7c2f; font-weight: 600; }
+.review-msg-err { color: #b00020; font-weight: 600; }
+
 @media (max-width: 980px){
     .module-layout{ grid-template-columns: 1fr; }
 }

@@ -1,92 +1,109 @@
-import {Link, useNavigate} from 'react-router-dom';
-import {useEffect, useState} from 'react';
-import {fetchCategories} from "../services/api";
+
+import { Link, useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { fetchCourseSlugs } from '../services/api';
 import '../styles/AdminPageStyles.css';
+
+const CATEGORY_META = {
+    1: { slug: 'math',    label: 'Математика' },
+    2: { slug: 'ukr',     label: 'Українська мова' },
+    3: { slug: 'history', label: 'Історія' },
+};
 
 const AdminPage = () => {
     const navigate = useNavigate();
-    const [categories, setCategories] = useState([]);
+    const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const data = {
-        math: [
-            { id: "math-mod-1", title: "Назва курсу ", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
-            { id: "m2", title: "Назва курсу", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
-        ],
-        history: [
-            { id: "h1", title: "Назва курсу", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
-            { id: "h2", title: "Назва курсу", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
-        ],
-        ukr: [
-            { id: "u1", title: "Назва курсу", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
-            { id: "u2", title: "Назва курсу", desc: "Lorem ipsum, dolor sit amet consectetur adipisicing elit. Fugiat et sapiente dolor possimus illum culpa provident iure atque, ex ut laboriosam cumque repellendus voluptate iste aliquam omnis? Voluptatibus, dolorem tempora." },
-        ],
-    };
+    const [activeCatId, setActiveCatId] = useState(1); // за замовчуванням: Математика
 
     useEffect(() => {
-        const loadCategories = async () => {
+        (async () => {
             try {
-                const data = await fetchCategories();
-                setCategories(data);
-            } catch (err) {
-                setError(err.message);
+                const data = await fetchCourseSlugs({ onlyPublished: false });
+                setCourses(data);
+            } catch (e) {
+                setError(e.message || 'Помилка завантаження');
             } finally {
                 setLoading(false);
             }
-        };
-
-        loadCategories();
+        })();
     }, []);
-    const [tab, setTab] = useState("math");
-    const items = data[tab];
+
+    const coursesByCategory = useMemo(() => {
+        const map = new Map();
+        for (const c of courses) {
+            if (!map.has(c.category_id)) map.set(c.category_id, []);
+            map.get(c.category_id).push(c);
+        }
+        return map;
+    }, [courses]);
+
+    const items = coursesByCategory.get(activeCatId) || [];
+    const themeSlug = CATEGORY_META[activeCatId]?.slug ?? 'default';
+
+    if (loading) {
+        return (
+            <div className={`list-page theme-${themeSlug}`}>
+                <div className="tabs-row">
+                    <div className="tabs">
+                        <button className={`tab tab--math is-active`} disabled>Математика</button>
+                        <button className={`tab tab--ukr`} disabled>Українська мова</button>
+                        <button className={`tab tab--history`} disabled>Історія</button>
+                    </div>
+                    <button className="add-btn" disabled>+</button>
+                </div>
+                <div className="course-cards">
+                    {Array.from({ length: 6 }).map((_, i) => (
+                        <div key={i} className="course-card skeleton" />
+                    ))}
+                </div>
+            </div>
+        );
+    }
+
+    if (error) return <div className="list-page"><p className="error">{error}</p></div>;
 
     return (
-        <div className={`list-page theme-${tab}`}>
+        <div className={`list-page theme-${themeSlug}`}>
             <div className="tabs-row">
                 <div className="tabs">
-                    <button
-                        className={`tab tab--math ${tab === "math" ? "is-active" : ""}`}
-                        onClick={() => setTab("math")}
-                    >
-                        Математика
-                    </button>
-                    <button
-                        className={`tab tab--history ${tab === "history" ? "is-active" : ""}`}
-                        onClick={() => setTab("history")}
-                    >
-                        Історія
-                    </button>
-                    <button
-                        className={`tab tab--ukr ${tab === "ukr" ? "is-active" : ""}`}
-                        onClick={() => setTab("ukr")}
-                    >
-                        Українська мова
-                    </button>
+                    {[1, 2, 3].map((id) => {
+                        const meta = CATEGORY_META[id];
+                        return (
+                            <button
+                                key={id}
+                                className={`tab tab--${meta.slug} ${activeCatId === id ? 'is-active' : ''}`}
+                                onClick={() => setActiveCatId(id)}
+                            >
+                                {meta.label}
+                            </button>
+                        );
+                    })}
                 </div>
-
-                <button className="add-btn" onClick={() => navigate("/admin/add-course")}>+</button>
+                <button className="add-btn" onClick={() => navigate('/admin/create-course')}>+</button>
             </div>
 
-            <div className="course-cards">
-                {items.map((c) => (
-                    <Link key={c.id} to={`/admin/modules/${c.id}`} className="course-card-link">
-                        <article className="course-card">
-                            <div className="course-card__media" />
-                            <div className="course-card__body">
-                                <div className="course-card__head">
-                                    <h3 className="course-card__title">{c.title}</h3>
-                                    <span className="course-card__more">***</span>
-                                </div>
-                                <p className="course-card__desc">{c.desc}</p>
-                                <div className="skeleton-pill" />
-                            </div>
-                        </article>
-                    </Link>
-                ))}
-            </div>
-
-        </div>
-    );
+    <div className="course-cards">
+        {items.map((c) => (
+            <Link key={c.slug} to={`/admin/courses/${c.slug}/edit`} className="course-card-link">
+                <article className="course-card">
+                    <div className="course-card__media" />
+                    <div className="course-card__body">
+                        <div className="course-card__head">
+                            <h3 className="course-card__title">{c.title}</h3>
+                            <span className="course-card__more">Редагувати ↗</span>
+                        </div>
+                        <p className="course-card__desc">{c.description || 'Без опису'}</p>
+                        <div className="skeleton-pill" />
+                    </div>
+                </article>
+            </Link>
+        ))}
+        {!items.length && <div className="empty">Курсів у цій категорії поки немає.</div>}
+    </div>
+</div>
+);
 };
 
 export default AdminPage;

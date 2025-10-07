@@ -17,6 +17,7 @@ import AdminModuleEditor from "../pages/AdminModuleEditor";
 import AdminUsersList from "../pages/AdminUsersList";
 import AdminUserDetail from "../pages/AdminUserDetail";
 import AdminCommentsPage from "../pages/AdminCommentsPage";
+import AdminCreateCourse from "../pages/AdminCreateCourse";
 
 
 const AppRouter = () => {
@@ -29,7 +30,9 @@ const AppRouter = () => {
 
             <Route path="/admin/courses" element={<AdminPage/>}/>
             <Route path="/admin/create-category" element={<CreateCategoryPage/>}/>
-            <Route path="/admin/modules/:moduleId" element={<AdminModuleEditor />} />
+            <Route path="/admin/create-course" element={<AdminCreateCourse/>}/>
+
+            <Route path="/admin/modules/" element={<AdminModuleEditor />} />
 
             <Route path="/admin/users" element={<AdminUsersList />} />
             <Route path="/admin/users/:userId" element={<AdminUserDetail />} />
@@ -46,8 +49,9 @@ const AppRouter = () => {
                 <Route path="/CourseDetailPage/:categorySlug/:courseSlug" element={<CourseDetailPage />} />
                 <Route path="/courses" element={<CoursesPage/>}/>
 
-            <Route path="/modules/:moduleId" element={<ModulePage />} />
-            <Route path="/modules/:moduleId/lessons/:lessonId" element={<LessonPage />} />
+            <Route path="/courses/:categorySlug/:courseSlug" element={<ModulePage />} />
+            <Route path="/courses/:categorySlug/:courseSlug/lessons/:lessonSlug" element={<LessonPage />} />
+
 
         </Routes>
     );

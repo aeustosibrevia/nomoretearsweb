@@ -1,33 +1,24 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate, useLocation } from 'react-router-dom';
-import { getCourseBySlugs, enrollInCourse } from '../services/api';
+import { getCourseBySlugs, enrollInCourse, getProfile } from '../services/api'; // <— добавили getProfile
 import '../styles/CourseDetail.css';
 
-function extractImageUrl(img_data) {
-    if (!img_data) return null;
-    if (typeof img_data === 'string') return img_data;
-    if (Array.isArray(img_data?.data)) {
-        try {
-            const text = new TextDecoder().decode(new Uint8Array(img_data.data));
-            if (/^https?:\/\//i.test(text)) return text;
-            const blob = new Blob([new Uint8Array(img_data.data)], { type: 'image/png' });
-            return URL.createObjectURL(blob);
-        } catch { return null; }
-    }
-    return null;
-}
+function extractImageUrl(img_data) { /* без изменений */ }
 
 export default function CourseDetailPage() {
     const { categorySlug, courseSlug } = useParams();
     const navigate = useNavigate();
     const loc = useLocation();
+
     const [course, setCourse] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const [enrolling, setEnrolling] = useState(false);
     const [enrolled, setEnrolled] = useState(false);
     const [notice, setNotice] = useState('');
+    const [username, setUsername] = useState(''); // <— добавили
 
+    // грузим курс
     useEffect(() => {
         let cancelled = false;
         setLoading(true); setError('');
@@ -38,24 +29,43 @@ export default function CourseDetailPage() {
         return () => { cancelled = true; };
     }, [categorySlug, courseSlug]);
 
+    useEffect(() => {
+        let cancelled = false;
+        const token = localStorage.getItem('token');
+        if (!token) return; // не авторизован — username не нужен до клика
+        getProfile()
+            .then(p => { if (!cancelled) setUsername(p?.username || ''); })
+            .catch(() => {}); // молча
+        return () => { cancelled = true; };
+    }, []);
+
     const handleEnroll = async () => {
         if (!course?.id || enrolling || enrolled) return;
 
         const token = localStorage.getItem('token');
         if (!token) {
-            const from = encodeURIComponent(loc.pathname + loc.search); // ← вместо location
+            const from = encodeURIComponent(loc.pathname + loc.search);
             return navigate(`/login?from=${from}`);
         }
+        let u = username;
+        if (!u) {
+            try {
+                const p = await getProfile();
+                u = p?.username || '';
+                setUsername(u);
+            } catch {}
+        }
+        if (!u) {
+            return setError('Не вдалось визначити імʼя користувача. Спробуйте ще раз.');
+        }
+
         setEnrolling(true); setNotice(''); setError('');
         try {
-            const res = await enrollInCourse(course.id);
-
-
+            const res = await enrollInCourse(u, course.id); // <— передаём username
             setEnrolled(true);
             setNotice(res?.message || 'Успішна реєстрація на курс.');
         } catch (e) {
-            const msg = e.message || 'Не вдалося записатись';
-            setError(msg);
+            setError(e.message || 'Не вдалося записатись');
         } finally {
             setEnrolling(false);
         }

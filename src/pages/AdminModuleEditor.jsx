@@ -31,19 +31,11 @@ export default function AdminModuleEditor() {
                         <div className="block-body">{mod.desc || "—"}</div>
                     </div>
 
-                    <div className="block gray">
-                        <div className="block-header">
-                            <span className="block-title">План</span>
-                            <button className="link-like">Змінити</button>
-                        </div>
-                        <div className="block-body">
-                            {mod.plan?.length ? (
-                                <ol className="plan-list">
-                                    {mod.plan.map((p, i)=> <li key={i}>{p}</li>)}
-                                </ol>
-                            ) : "—"}
-                        </div>
-                    </div>
+
+
+
+
+
                 </section>
             </div>
 
