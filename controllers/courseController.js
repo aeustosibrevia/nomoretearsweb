@@ -76,10 +76,13 @@ exports.getAllCourses = async (req, res, next) => {
 };
 
 // GET /api/courses/:id
+
 exports.getCourseById = async (req, res, next) => {
     try {
-        const result = await courseService.getCourseById(req.params.id);
-        res.json(result);
+        const courseId = req.params.id;
+        const user = req.user;
+        const course = await courseService.getById(courseId, user);
+        res.json(course);
     } catch (err) {
         next(err);
     }
@@ -94,6 +97,16 @@ exports.getCourseBySlugs = async (req, res, next) => {
             return next(createError(404, "Курс не знайдено."));
         }
         res.json(result);
+    } catch (err) {
+        next(err);
+    }
+};
+
+exports.listSlugsWithCategoryIds = async (req, res, next) => {
+    try {
+        const onlyPublished = req.query.onlyPublished !== 'false';
+        const items = await courseService.getSlugsWithCategoryIds({ onlyPublished });
+        res.json(items);
     } catch (err) {
         next(err);
     }

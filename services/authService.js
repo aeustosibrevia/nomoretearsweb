@@ -139,7 +139,13 @@ exports.getProfile = async (authUser) => {
         id: user.id,
         username: user.username,
         email: user.email,
-        createdAt: user.created_at
+        createdAt: user.created_at,
+        role: user.role,
+        profile_picture: user.profile_picture,
+        phone_number: user.phone_number,
+        birthday: user.birthday,
+        first_name: user.first_name,
+        last_name: user.last_name
     };
 };
 

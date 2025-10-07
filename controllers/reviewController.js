@@ -73,3 +73,14 @@ exports.getAverageRating = async (req, res, next) => {
         next(err);
     }
 };
+
+
+exports.getAllReviews = async (req, res, next) => {
+    try {
+        const user = req.user;
+        const result = await reviewService.getAllReviews(user);
+        res.json(result);
+    } catch (err) {
+        next(err);
+    }
+};

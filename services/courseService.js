@@ -136,3 +136,43 @@ exports.getBySlugs = async (categorySlug, courseSlug, user) => {
 
     return course;
 };
+
+
+
+exports.getById = async (courseId, user) => {
+    const course = await Course.findOne({
+        where: { id: courseId },
+        include: [
+            {
+                association: 'category'
+            },
+        ]
+    });
+
+    if (!course) {
+        throw createError(404, "Курс не знайдено.");
+    }
+
+    if (!course.is_published) {
+        const isOwner = user?.userId === course.instructor_id;
+        const isAdmin = user?.role === 'admin';
+        if (!isOwner && !isAdmin) {
+            throw createError(403, "Курс ще не опублікований.");
+        }
+    }
+
+    return course;
+};
+
+exports.getSlugsWithCategoryIds = async ({ onlyPublished = true } = {}) => {
+    const where = {};
+    if (onlyPublished) where.is_published = true;
+
+    const rows = await Course.findAll({
+        where,
+        attributes: ['slug', 'category_id', 'description', 'img_data', 'title'],
+        order: [['id', 'ASC']]
+    });
+
+    return rows.map(r => r.get({ plain: true }));
+};

@@ -10,6 +10,6 @@ router.put('/:id', authMiddleware, reviewController.loadReview, validateReview, 
 
 router.delete('/:id', authMiddleware, reviewController.loadReview, reviewController.deleteReview);
 
-
+router.get('/', authMiddleware, reviewController.getAllReviews);
 
 module.exports = router;

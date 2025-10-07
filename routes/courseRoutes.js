@@ -8,8 +8,10 @@ router.post('/', authMiddleware, validateCourse, courseController.createCourse);
 router.put('/:id', authMiddleware, courseController.loadCourse, validateCourse, courseController.updateCourse);
 router.delete('/:id', authMiddleware, courseController.deleteCourse);
 router.get('/', courseController.getAllCourses);
-router.get('/:id', courseController.getCourseById);
 router.put('/:id/publish', authMiddleware, courseController.publishCourse);
 router.put('/:id/unpublish', authMiddleware, courseController.unpublishCourse);
+router.get('/slugs', courseController.listSlugsWithCategoryIds);
+router.get('/:id', authMiddleware, courseController.getCourseById);
+
 
 module.exports = router;

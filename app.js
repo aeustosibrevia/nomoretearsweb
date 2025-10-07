@@ -1,4 +1,5 @@
 const dotenv = require('dotenv');
+dotenv.config();
 const express = require('express');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -17,7 +18,6 @@ require('./utils/passport');
 
 
 const app = express();
-dotenv.config();
 
 app.use(cors({
     origin: 'http://localhost:5173',

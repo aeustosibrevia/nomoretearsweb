@@ -1,6 +1,9 @@
+
 const createError = require('http-errors');
 const Review = require('../models/review');
 const Course = require('../models/course');
+const User = require('../models/user');
+
 const Enrollment = require('../models/enrollment');
 
 exports.createReview = async (data, user) => {
@@ -126,5 +129,34 @@ exports.getAverageRating = async (courseId) => {
     return {
         average: result.average ? parseFloat(result.average).toFixed(2) : null,
         count: parseInt(result.count)
+    };
+};
+
+
+exports.getAllReviews = async (user) => {
+    if (!user || user.role !== 'admin') {
+        throw createError(403, "Тільки адміністратор може переглядати всі відгуки.");
+    }
+
+    const reviews = await Review.findAll({
+        include: [
+            {
+                model: User,
+                as: 'user',
+                attributes: ['id', 'username', 'email', 'first_name', 'last_name']
+            },
+            {
+                model: Course,
+                as: 'course',
+                attributes: ['id', 'title']
+            }
+        ],
+        order: [['created_at', 'DESC']]
+    });
+
+    return {
+        message: 'Список усіх відгуків',
+        count: reviews.length,
+        reviews
     };
 };

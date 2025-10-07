@@ -89,7 +89,7 @@ exports.isUserEnrolled = async (userId, courseId) => {
 exports.listByUserId = async (userId) => {
     return Enrollment.findAll({
         where: { user_id: userId },
-        include: [{ model: Course, as: 'course', attributes: ['id', 'title', 'slug'] }],
+        include: [{ model: Course, as: 'course', attributes: ['id', 'title', 'slug', 'category_id', 'description'] }],
         order: [['enrolled_at', 'DESC']]
     });
 };
